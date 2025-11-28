@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran - Sel Elektrolisis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="hero-top">
+                <div class="hero-text">
+                    <h1>⚡ Petualangan Sel Elektrolisis</h1>
+                    <p class="subtitle">Belajar kimia jadi seru dengan animasi, warna-warni, dan kuis untuk anak-anak!</p>
+                </div>
+                <div class="hero-illustration" aria-hidden="true">
+                    <svg viewBox="0 0 280 220">
+                        <defs>
+                            <linearGradient id="grad-body" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ffd166" />
+                                <stop offset="100%" stop-color="#f37335" />
+                            </linearGradient>
+                            <linearGradient id="grad-bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#7afcff" />
+                                <stop offset="100%" stop-color="#70e000" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="140" cy="110" r="100" fill="rgba(255,255,255,0.35)" />
+                        <g>
+                            <path d="M110 70 Q140 30 170 70 L185 140 Q160 190 115 180 L95 120 Z" fill="url(#grad-body)" />
+                            <ellipse cx="140" cy="160" rx="55" ry="18" fill="rgba(0,0,0,0.1)" />
+                            <circle cx="120" cy="100" r="12" fill="#fff" />
+                            <circle cx="160" cy="100" r="12" fill="#fff" />
+                            <circle cx="118" cy="100" r="6" fill="#1a1a1a" />
+                            <circle cx="158" cy="100" r="6" fill="#1a1a1a" />
+                            <path d="M118 125 Q140 145 162 125" stroke="#1a1a1a" stroke-width="6" fill="none" stroke-linecap="round" />
+                            <polygon points="140,60 158,94 136,94 150,130 118,90 140,90" fill="url(#grad-bolt)" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="tab-content active" id="pilih">
+            <section class="path-selector" aria-label="Pilih langkah belajar">
+                <h2>Mulai Petualangan Elektrolisis</h2>
+                <p class="path-intro">Pilih jalur belajar yang ingin kamu kunjungi selanjutnya. Ikuti urutan untuk pengalaman lengkap atau lompat ke bagian favoritmu.</p>
+                <div class="path-grid">
+                    <article class="path-card">
+                        <h3>Teori Dasar</h3>
+                        <p>Pelajari konsep inti sel elektrolisis, komponen, hingga hukum Faraday dengan bahasa yang mudah.</p>
+                        <button class="btn-path tab-trigger" data-target="teori">Buka Teori</button>
+                    </article>
+                    <article class="path-card">
+                        <h3>Video Pembelajaran</h3>
+                        <p>Tonton animasi singkat tentang perjalanan ion. Cocok untuk memantapkan pemahaman sebelum praktik.</p>
+                        <button class="btn-path tab-trigger" data-target="video">Tonton Video</button>
+                    </article>
+                    <article class="path-card">
+                        <h3>Simulasi Interaktif</h3>
+                        <p>Atur tegangan, arus, dan waktu. Lihat ion bergerak dan hitung hasilnya secara langsung.</p>
+                        <button class="btn-path tab-trigger" data-target="simulasi">Mulai Simulasi</button>
+                    </article>
+                    <article class="path-card">
+                        <h3>Kuis Interaktif</h3>
+                        <p>Uji pemahamanmu dengan pertanyaan pilihan ganda dan dapatkan skor terbaikmu.</p>
+                        <button class="btn-path tab-trigger" data-target="kuis">Kerjakan Kuis</button>
+                    </article>
+                </div>
+            </section>
+        </div>
+
+        <!-- Tab Teori -->
+        <div class="tab-content" id="teori">
+            <div class="theory-section">
+                <div class="tab-back">
+                    <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+                </div>
+                <h2>Apa itu Sel Elektrolisis?</h2>
+                <div class="card">
+                    <p><strong>Sel elektrolisis</strong> adalah sel elektrokimia yang menggunakan energi listrik untuk menghasilkan reaksi kimia yang tidak spontan.</p>
+                    
+                    <h3>Komponen Utama:</h3>
+                    <ul>
+                        <li><strong>Katoda (-)</strong>: Elektroda negatif, tempat terjadi reduksi</li>
+                        <li><strong>Anoda (+)</strong>: Elektroda positif, tempat terjadi oksidasi</li>
+                        <li><strong>Elektrolit</strong>: Larutan atau lelehan yang menghantarkan listrik</li>
+                        <li><strong>Sumber Arus</strong>: Baterai atau adaptor DC</li>
+                    </ul>
+
+                    <h3>Proses Elektrolisis:</h3>
+                    <ol>
+                        <li>Arus listrik dialirkan melalui elektrolit</li>
+                        <li>Ion positif (kation) bergerak ke katoda</li>
+                        <li>Ion negatif (anion) bergerak ke anoda</li>
+                        <li>Terjadi reaksi redoks di kedua elektroda</li>
+                    </ol>
+
+                    <div class="info-box">
+                        <h4>Hukum Faraday:</h4>
+                        <p>Massa zat yang diendapkan berbanding lurus dengan jumlah muatan listrik yang mengalir.</p>
+                        <p class="formula">m = (Q × Mr) / (n × F)</p>
+                        <p class="formula-desc">
+                            m = massa (gram)<br>
+                            Q = muatan listrik (Coulomb)<br>
+                            Mr = massa molekul relatif<br>
+                            n = jumlah elektron<br>
+                            F = konstanta Faraday (96.500 C/mol)
+                        </p>
+                    </div>
+
+                    <div class="character-callout">
+                        <div class="mascot-avatar" aria-hidden="true">
+                            <svg viewBox="0 0 160 140">
+                                <circle cx="80" cy="70" r="60" fill="#4dabf7" />
+                                <circle cx="60" cy="60" r="12" fill="#fff" />
+                                <circle cx="100" cy="60" r="12" fill="#fff" />
+                                <circle cx="58" cy="60" r="6" fill="#1a1a1a" />
+                                <circle cx="98" cy="60" r="6" fill="#1a1a1a" />
+                                <path d="M50 90 Q80 110 110 90" stroke="#1a1a1a" stroke-width="6" fill="none" stroke-linecap="round" />
+                                <path d="M52 40 Q80 10 108 40" fill="#ffd166" />
+                            </svg>
+                        </div>
+                        <div class="mascot-bubble">
+                            <h4>Halo, aku Sparky!</h4>
+                            <p>Ayo ikuti aku menjelajah dunia elektrolisis. Klik kartu petualangan di bawah ini untuk membuka rahasia ion!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="journey-title">Kartu Petualangan Ion</h3>
+                <div class="journey-cards">
+                    <div class="journey-card" tabindex="0">
+                        <span class="journey-number">1</span>
+                        <h4>Energi Listrik Datang!</h4>
+                        <p>Ketika baterai dihubungkan, ion-ion mulai bersemangat. Mereka menari siap bergerak ke elektroda.</p>
+                        <p class="journey-flip">Klik untuk fakta rahasia ✨</p>
+                        <div class="journey-secret">Ion bergerak karena tertarik oleh muatan berlawanan, lho!</div>
+                    </div>
+                    <div class="journey-card" tabindex="0">
+                        <span class="journey-number">2</span>
+                        <h4>Kation ke Katoda</h4>
+                        <p>Kation bermuatan positif berlari ke katoda untuk mendapatkan elektron baru dan berubah menjadi atom netral.</p>
+                        <p class="journey-flip">Klik untuk fakta rahasia ✨</p>
+                        <div class="journey-secret">Reduksi terjadi ketika ion menerima elektron.</div>
+                    </div>
+                    <div class="journey-card" tabindex="0">
+                        <span class="journey-number">3</span>
+                        <h4>Anion ke Anoda</h4>
+                        <p>Anion bermuatan negatif menuju anoda untuk melepaskan elektron dan membentuk zat baru.</p>
+                        <p class="journey-flip">Klik untuk fakta rahasia ✨</p>
+                        <div class="journey-secret">Oksidasi artinya ion melepaskan elektron, seperti melepas balon!</div>
+                    </div>
+                </div>
+
+                <div class="fun-facts">
+                    <div class="fun-facts-header">
+                        <h3>Fun Fact Kimia</h3>
+                        <button id="newFunFact" class="btn-chip">Fakta Baru</button>
+                    </div>
+                    <p id="funFactText">Tahukah kamu? Listrik bisa membuat logam berubah warna menjadi mengkilap banget!</p>
+                </div>
+
+                <h3>Contoh Aplikasi:</h3>
+                <div class="applications">
+                    <div class="app-card">
+                        <span class="app-icon">✨</span>
+                        <h4>Penyepuhan Logam</h4>
+                        <p>Melapisi logam dengan logam lain (emas, perak, nikel)</p>
+                        <small>Contoh: perhiasan, medali, hiasan mini.</small>
+                    </div>
+                    <div class="app-card">
+                        <span class="app-icon">🔧</span>
+                        <h4>Pemurnian Logam</h4>
+                        <p>Memurnikan tembaga dan aluminium</p>
+                        <small>Dipakai agar kabel listrik tidak cepat panas.</small>
+                    </div>
+                    <div class="app-card">
+                        <span class="app-icon">🧪</span>
+                        <h4>Produksi Kimia</h4>
+                        <p>Produksi klorin, natrium hidroksida, dan hidrogen</p>
+                        <small>Klorin bantu menjaga air kolam tetap bersih.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Video Pembelajaran -->
+        <div class="tab-content" id="video">
+            <div class="video-tab">
+                <div class="tab-back">
+                    <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+                </div>
+                <h2>Video Pembelajaran Sel Elektrolisis</h2>
+                <p class="video-intro">Ikuti penjelasan animasi agar kamu makin paham tentang bagaimana ion bergerak dan reaksi terjadi di dalam sel elektrolisis.</p>
+                <div class="video-section">
+                    <div class="video-card">
+                        <h3>Video untuk Pembelajaran</h3>
+                        <p>Pahami konsep dasar elektrolisis dengan penjelasan visual yang mudah diikuti.</p>
+                        <div class="video-wrapper" data-video-title="Video untuk Pembelajaran">
+                            <button class="btn-close-video" type="button" aria-label="Tutup tampilan layar besar">&times;</button>
+                            <iframe class="js-youtube" id="learningVideo" src="https://www.youtube.com/embed/U0HlV6nuHSw?rel=0&playsinline=1&enablejsapi=1" title="Video Pembelajaran Sel Elektrolisis" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <h3>Video untuk Simulasi</h3>
+                        <p>Lihat contoh simulasi praktis sebagai panduan sebelum kamu mencoba simulasi interaktif.</p>
+                        <div class="video-wrapper" data-video-title="Video untuk Simulasi">
+                            <button class="btn-close-video" type="button" aria-label="Tutup tampilan layar besar">&times;</button>
+                            <iframe class="js-youtube" id="simulationVideo" src="https://www.youtube.com/embed/bybESKhKnrQ?rel=0&playsinline=1&enablejsapi=1" title="Simulasi Sel Elektrolisis" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-tips">
+                    <div class="story-card">
+                        <h4>🎧 Tips Menonton</h4>
+                        <p>Gunakan headset dan catat poin penting seperti jenis ion, arah gerakannya, serta produk yang terbentuk.</p>
+                    </div>
+                    <div class="story-card">
+                        <h4>🧠 Setelah Menonton</h4>
+                        <p>Coba jelaskan kembali dengan bahasamu sendiri sebelum berpindah ke tab simulasi untuk praktik.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Simulasi -->
+        <div class="tab-content" id="simulasi">
+            <div class="tab-back">
+                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+            </div>
+            <h2>Simulasi Sel Elektrolisis</h2>
+            <div class="mission-banner">
+                <div class="mission-text">
+                    <h3>🌈 Misi Eksperimen</h3>
+                    <p>Pilih bahan, atur tegangan, dan lihat bagaimana ion menari menuju elektroda. Jangan lupa catat hasilnya!</p>
+                </div>
+                <div class="mission-badge">
+                    <span class="badge-title">Level Anak Pintar</span>
+                    <span class="badge-stars">★★★</span>
+                </div>
+            </div>
+
+            <div class="simulation-layout">
+                <section class="simulation-panel simulation-inputs">
+                    <h3>Pengaturan Percobaan</h3>
+                    <div class="simulation-controls">
+                        <div class="control-group">
+                            <label for="electrolyte">Pilih Elektrolit:</label>
+                            <select id="electrolyte">
+                                <option value="CuSO4">Larutan CuSO₄ (Tembaga Sulfat)</option>
+                                <option value="NaCl">Larutan NaCl (Natrium Klorida)</option>
+                                <option value="H2SO4">Larutan H₂SO₄ (Asam Sulfat)</option>
+                                <option value="AgNO3">Larutan AgNO₃ (Perak Nitrat)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="voltage">Tegangan (V): <span id="voltageValue">5</span>V</label>
+                            <input type="range" id="voltage" min="1" max="12" value="5" step="0.5">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="current">Arus (A): <span id="currentValue">2</span>A</label>
+                            <input type="range" id="current" min="0.5" max="5" value="2" step="0.5">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="time">Waktu (menit): <span id="timeValue">10</span></label>
+                            <input type="range" id="time" min="1" max="60" value="10" step="1">
+                        </div>
+
+                        <button id="startBtn" class="btn-primary">Mulai Elektrolisis</button>
+                        <button id="resetBtn" class="btn-secondary">Reset</button>
+                    </div>
+                </section>
+
+                <section class="simulation-panel simulation-outputs hidden">
+                    <h3>Hasil Simulasi</h3>
+                    <div class="reaction-info" id="reactionInfo">
+                        <div class="reactions">
+                            <div class="reaction-box">
+                                <h4>Katoda (Reduksi)</h4>
+                                <p id="cathodaReaction">-</p>
+                            </div>
+                            <div class="reaction-box">
+                                <h4>Anoda (Oksidasi)</h4>
+                                <p id="anodaReaction">-</p>
+                            </div>
+                        </div>
+                        <div class="calculation-result">
+                            <h4>Hasil Perhitungan:</h4>
+                            <p id="massResult">-</p>
+                            <p id="volumeResult">-</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="simulation-area">
+                <canvas id="simulationCanvas" width="800" height="500"></canvas>
+            </div>
+
+            <div class="simulation-story">
+                <div class="story-card">
+                    <h4>🎯 Tujuan Percobaan</h4>
+                    <p>Lihat bagaimana ion berubah menjadi zat baru di elektroda. Perhatikan warna dan gerakan partikel.</p>
+                </div>
+                <div class="story-card">
+                    <h4>📝 Catatan Ilmuwan Cilik</h4>
+                    <p>Bandingkan hasil jika tegangan ditambah atau dikurangi. Mana yang menghasilkan massa paling besar?</p>
+                </div>
+                <div class="story-card">
+                    <h4>💡 Tips Sparky</h4>
+                    <p>Jika arus semakin besar, ion bergerak lebih cepat. Coba bandingkan hasil dengan waktu yang berbeda.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Kuis -->
+        <div class="tab-content" id="kuis">
+            <div class="tab-back">
+                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+            </div>
+            <h2>Kuis Interaktif</h2>
+            <div class="quiz-container" id="quizContainer">
+                <div class="quiz-progress">
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <div class="question-card">
+                    <h3 id="questionText"></h3>
+                    <div class="options" id="optionsContainer"></div>
+                    <button id="submitAnswer" class="btn-primary">Submit Jawaban</button>
+                    <div id="feedback" class="feedback"></div>
+                </div>
+                <div class="quiz-nav">
+                    <button id="prevQuestion" class="btn-secondary">← Sebelumnya</button>
+                    <span id="questionCounter">1 / 5</span>
+                    <button id="nextQuestion" class="btn-secondary">Selanjutnya →</button>
+                </div>
+                <div class="quiz-score">
+                    <h3>Skor: <span id="score">0</span> / <span id="totalQuestions">5</span></h3>
+                </div>
+                <div id="quizCelebration" class="quiz-celebration" aria-hidden="true"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-backdrop hidden" id="videoBackdrop" aria-hidden="true"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

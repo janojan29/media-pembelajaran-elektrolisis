@@ -9,6 +9,12 @@ let activeWrapper = null;
 const playerMap = new Map();
 
 function setActiveTab(tabName) {
+    // Reset kuis jika keluar dari tab kuis
+    const currentActiveTab = document.querySelector('.tab-content.active');
+    if (currentActiveTab && currentActiveTab.id === 'kuis' && tabName !== 'kuis') {
+        resetQuiz();
+    }
+    
     tabBtns.forEach(b => b.classList.remove('active'));
     tabContents.forEach(c => c.classList.remove('active'));
 
@@ -679,6 +685,7 @@ electrolyteSelect.addEventListener('change', () => {
 const quizData = [
     {
         question: 'Apa yang dimaksud dengan sel elektrolisis?',
+        type: 'multiple',
         options: [
             'Sel yang menghasilkan listrik dari reaksi kimia spontan',
             'Sel yang menggunakan energi listrik untuk reaksi kimia tidak spontan',
@@ -689,6 +696,7 @@ const quizData = [
     },
     {
         question: 'Di elektroda manakah terjadi reaksi reduksi?',
+        type: 'multiple',
         options: [
             'Anoda',
             'Katoda',
@@ -699,6 +707,7 @@ const quizData = [
     },
     {
         question: 'Berapa nilai konstanta Faraday?',
+        type: 'multiple',
         options: [
             '96.500 C/mol',
             '6.022 × 10²³',
@@ -709,6 +718,7 @@ const quizData = [
     },
     {
         question: 'Pada elektrolisis larutan CuSO₄, zat apa yang mengendap di katoda?',
+        type: 'multiple',
         options: [
             'Gas oksigen',
             'Gas hidrogen',
@@ -719,6 +729,7 @@ const quizData = [
     },
     {
         question: 'Aplikasi elektrolisis dalam industri adalah...',
+        type: 'multiple',
         options: [
             'Pembuatan baterai',
             'Penyepuhan logam',
@@ -726,12 +737,44 @@ const quizData = [
             'Semua benar'
         ],
         correct: 3
+    },
+    {
+        question: 'Berapa massa tembaga (Cu) yang diendapkan jika arus 2A dialirkan selama 965 detik? (Ar Cu = 64, F = 96500 C/mol, valensi Cu = 2). Jawab dalam gram (angka saja)',
+        type: 'essay',
+        correct: '0.64'
+    },
+    {
+        question: 'Berapa volume gas H₂ (STP) yang dihasilkan dari elektrolisis air jika arus 5A dialirkan selama 1930 detik? (F = 96500 C/mol, Vm = 22.4 L/mol). Jawab dalam liter (angka saja)',
+        type: 'essay',
+        correct: '1.12'
+    },
+    {
+        question: 'Jika pada elektrolisis digunakan arus 3A selama 3216,67 detik, berapa mol elektron yang dipindahkan? (F = 96500 C/mol). Jawab dalam mol (angka saja)',
+        type: 'essay',
+        correct: '0.1'
+    },
+    {
+        question: 'Berapa waktu (dalam detik) yang diperlukan untuk mengendapkan 10.8 gram perak (Ag) dengan arus 2A? (Ar Ag = 108, F = 96500 C/mol, valensi Ag = 1). Jawab angka saja',
+        type: 'essay',
+        correct: '4825'
+    },
+    {
+        question: 'Dalam sel elektrolisis, elektron mengalir dari...',
+        type: 'multiple',
+        options: [
+            'Katoda ke anoda melalui larutan',
+            'Anoda ke katoda melalui rangkaian luar',
+            'Katoda ke anoda melalui rangkaian luar',
+            'Tidak ada aliran elektron'
+        ],
+        correct: 1
     }
 ];
 
 let currentQuestion = 0;
 let score = 0;
 let answers = new Array(quizData.length).fill(null);
+let answeredQuizQuestions = new Set(); // Melacak soal yang sudah dijawab
 const progressFill = document.getElementById('progressFill');
 const scoreDisplay = document.getElementById('score');
 const totalQuestionsDisplay = document.getElementById('totalQuestions');
@@ -753,34 +796,99 @@ function loadQuestion() {
     
     optionsContainer.innerHTML = '';
     
-    question.options.forEach((option, index) => {
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'option';
-        optionDiv.textContent = option;
-        optionDiv.dataset.index = index;
+    const isAlreadyAnswered = answeredQuizQuestions.has(currentQuestion);
+    
+    if (question.type === 'essay') {
+        // Soal essay - input angka
+        const inputDiv = document.createElement('div');
+        inputDiv.className = 'essay-input-container';
         
-        if (answers[currentQuestion] === index) {
-            optionDiv.classList.add('selected');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'essayAnswer';
+        input.className = 'essay-input';
+        input.placeholder = 'Masukkan jawaban (angka saja)';
+        input.inputMode = 'decimal';
+        
+        if (answers[currentQuestion] !== null) {
+            input.value = answers[currentQuestion];
         }
         
-        optionDiv.addEventListener('click', () => {
-            document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected');
+        // Jika sudah dijawab, nonaktifkan input
+        if (isAlreadyAnswered) {
+            input.disabled = true;
+            input.classList.add('disabled');
+            // Tampilkan hasil benar/salah
+            const userAnswer = answers[currentQuestion].toString().replace(',', '.').trim();
+            const correctAnswer = question.correct.toString();
+            if (userAnswer === correctAnswer) {
+                input.classList.add('correct');
+            } else {
+                input.classList.add('incorrect');
+            }
+        } else {
+            input.addEventListener('input', () => {
+                answers[currentQuestion] = input.value.trim();
             });
-            optionDiv.classList.add('selected');
-            answers[currentQuestion] = index;
-        });
+        }
         
-        optionsContainer.appendChild(optionDiv);
-    });
+        inputDiv.appendChild(input);
+        optionsContainer.appendChild(inputDiv);
+    } else {
+        // Soal pilihan ganda
+        question.options.forEach((option, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = option;
+            optionDiv.dataset.index = index;
+            
+            if (answers[currentQuestion] === index) {
+                optionDiv.classList.add('selected');
+            }
+            
+            // Jika sudah dijawab, tampilkan hasil dan nonaktifkan
+            if (isAlreadyAnswered) {
+                optionDiv.classList.add('disabled');
+                if (index === question.correct) {
+                    optionDiv.classList.add('correct');
+                } else if (answers[currentQuestion] === index) {
+                    optionDiv.classList.add('incorrect');
+                }
+            } else {
+                optionDiv.addEventListener('click', () => {
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    optionDiv.classList.add('selected');
+                    answers[currentQuestion] = index;
+                });
+            }
+            
+            optionsContainer.appendChild(optionDiv);
+        });
+    }
     
     if (questionCounterDisplay) {
         questionCounterDisplay.textContent = `${currentQuestion + 1} / ${quizData.length}`;
     }
+    
+    // Selalu kosongkan feedback (tidak menampilkan keterangan jawaban)
     if (feedbackEl) {
         feedbackEl.textContent = '';
         feedbackEl.className = 'feedback';
     }
+    
+    // Nonaktifkan tombol submit jika sudah dijawab
+    if (submitAnswerBtn) {
+        if (isAlreadyAnswered) {
+            submitAnswerBtn.disabled = true;
+            submitAnswerBtn.classList.add('disabled');
+        } else {
+            submitAnswerBtn.disabled = false;
+            submitAnswerBtn.classList.remove('disabled');
+        }
+    }
+    
     updateQuizProgress();
 }
 
@@ -810,33 +918,131 @@ function launchStars(count = 12) {
     }
 }
 
+// Audio feedback functions
+function playCorrectSound() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Play two ascending tones for correct answer
+    const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5 (happy chord)
+    
+    frequencies.forEach((freq, i) => {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.frequency.value = freq;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.1);
+        gainNode.gain.exponentialDecayToValueAtTime = 0.01;
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.1);
+        gainNode.gain.exponentialDecayTo = 0.01;
+        gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.1 + 0.3);
+        
+        oscillator.start(audioCtx.currentTime + i * 0.1);
+        oscillator.stop(audioCtx.currentTime + i * 0.1 + 0.3);
+    });
+}
+
+function playIncorrectSound() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Play "tetot" sound - two short beeps descending
+    const frequencies = [400, 300];
+    
+    frequencies.forEach((freq, i) => {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.frequency.value = freq;
+        oscillator.type = 'square';
+        
+        const startTime = audioCtx.currentTime + i * 0.15;
+        gainNode.gain.setValueAtTime(0.25, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.01, startTime + 0.12);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.12);
+    });
+}
+
 if (submitAnswerBtn) {
     submitAnswerBtn.addEventListener('click', () => {
-    if (answers[currentQuestion] === null) {
-        alert('Pilih jawaban dulu ya, Bintang Kimia!');
+    // Cek apakah sudah dijawab
+    if (answeredQuizQuestions.has(currentQuestion)) {
         return;
     }
     
-    const question = quizData[currentQuestion];
-        if (!feedbackEl) return;
-    const options = document.querySelectorAll('.option');
+    if (answers[currentQuestion] === null || answers[currentQuestion] === '') {
+        alert('Pilih atau isi jawaban dulu ya, Bintang Kimia!');
+        return;
+    }
     
-    if (answers[currentQuestion] === question.correct) {
-        feedbackEl.textContent = 'Yeay! Jawabanmu benar 🎉';
-        feedbackEl.className = 'feedback correct';
-        options[answers[currentQuestion]].classList.add('correct');
-        launchStars();
+    // Tandai soal sebagai sudah dijawab
+    answeredQuizQuestions.add(currentQuestion);
+    
+    const question = quizData[currentQuestion];
+    
+    if (question.type === 'essay') {
+        // Validasi jawaban essay
+        const userAnswer = answers[currentQuestion].toString().replace(',', '.').trim();
+        const correctAnswer = question.correct.toString();
+        const essayInput = document.getElementById('essayAnswer');
+        
+        if (userAnswer === correctAnswer) {
+            if (essayInput) {
+                essayInput.classList.add('correct');
+                essayInput.disabled = true;
+            }
+            playCorrectSound();
+            launchStars();
+        } else {
+            if (essayInput) {
+                essayInput.classList.add('incorrect');
+                essayInput.disabled = true;
+            }
+            playIncorrectSound();
+        }
     } else {
-        feedbackEl.textContent = `Ups! Jawaban yang tepat: ${question.options[question.correct]}`;
-        feedbackEl.className = 'feedback incorrect';
-        options[answers[currentQuestion]].classList.add('incorrect');
-        options[question.correct].classList.add('correct');
+        // Validasi jawaban pilihan ganda
+        const options = document.querySelectorAll('.option');
+        
+        if (answers[currentQuestion] === question.correct) {
+            options[answers[currentQuestion]].classList.add('correct');
+            playCorrectSound();
+            launchStars();
+        } else {
+            options[answers[currentQuestion]].classList.add('incorrect');
+            options[question.correct].classList.add('correct');
+            playIncorrectSound();
+        }
+        
+        // Nonaktifkan semua option setelah dijawab
+        options.forEach(opt => opt.classList.add('disabled'));
+    }
+    
+    // Nonaktifkan tombol submit setelah dijawab
+    if (submitAnswerBtn) {
+        submitAnswerBtn.disabled = true;
+        submitAnswerBtn.classList.add('disabled');
     }
     
     // Calculate score
     score = 0;
     answers.forEach((answer, idx) => {
-        if (answer === quizData[idx].correct) score++;
+        const q = quizData[idx];
+        if (q.type === 'essay') {
+            if (answer !== null && answer.toString().replace(',', '.').trim() === q.correct.toString()) {
+                score++;
+            }
+        } else {
+            if (answer === q.correct) score++;
+        }
     });
     if (scoreDisplay) {
         scoreDisplay.textContent = score;
@@ -863,6 +1069,28 @@ if (prevQuestionBtn) {
     });
 }
 
+// Fungsi untuk reset kuis
+function resetQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    answers = new Array(quizData.length).fill(null);
+    answeredQuizQuestions.clear();
+    
+    if (scoreDisplay) {
+        scoreDisplay.textContent = '0';
+    }
+    if (feedbackEl) {
+        feedbackEl.textContent = '';
+        feedbackEl.className = 'feedback';
+    }
+    if (submitAnswerBtn) {
+        submitAnswerBtn.disabled = false;
+        submitAnswerBtn.classList.remove('disabled');
+    }
+    
+    loadQuestion();
+}
+
 // Game Edukatif - Ular Tangga Elektrolisis
 const boardElement = document.getElementById('gameBoard');
 const diceValueEl = document.getElementById('diceValue');
@@ -875,27 +1103,26 @@ const gameOptionsEl = document.getElementById('gameOptions');
 const closeQuestionBtn = document.getElementById('closeQuestion');
 const playerPanels = document.querySelectorAll('.player-panel');
 
-const BOARD_SIZE = 36;
+const BOARD_SIZE = 30;
 const ROW_SIZE = 6;
 const ladders = {
     3: 11,
-    6: 17,
-    14: 25,
-    20: 32
+    7: 16,
+    12: 22,
+    18: 27
 };
 
 const snakes = {
-    18: 9,
-    23: 13,
-    28: 19,
-    31: 22,
-    34: 27
+    14: 5,
+    21: 9,
+    25: 17,
+    29: 20
 };
 
 const gameQuestions = [
     {
-        square: 4,
         question: 'Apa tujuan utama proses elektrolisis?',
+        type: 'multiple',
         options: [
             'Menghasilkan listrik dari reaksi spontan',
             'Menggunakan listrik untuk memaksa reaksi kimia berjalan',
@@ -907,54 +1134,127 @@ const gameQuestions = [
         explanation: 'Elektrolisis memakai energi listrik untuk menjalankan reaksi kimia yang tidak spontan.'
     },
     {
-        square: 9,
         question: 'Elektroda manakah yang memiliki muatan negatif pada sel elektrolisis?',
+        type: 'multiple',
         options: ['Katoda', 'Anoda', 'Keduanya bermuatan positif', 'Tidak ada muatan'],
         correct: 0,
         reward: 10,
         explanation: 'Katoda menerima elektron dari sumber listrik sehingga bermuatan negatif.'
     },
     {
-        square: 12,
+        question: 'Berapa massa tembaga (gram) yang diendapkan jika arus 2A dialirkan selama 965 detik? (Ar Cu=64, F=96500, valensi=2). Jawab angka saja.',
+        type: 'essay',
+        correct: '0.64',
+        reward: 15,
+        explanation: 'Menggunakan rumus m = (I × t × Ar) / (n × F) = (2 × 965 × 64) / (2 × 96500) = 0.64 gram'
+    },
+    {
         question: 'Ion apa yang bergerak menuju anoda?',
+        type: 'multiple',
         options: ['Kation', 'Anion', 'Atom netral', 'Molekul air'],
         correct: 1,
         reward: 10,
         explanation: 'Anion bermuatan negatif tertarik menuju anoda yang bermuatan positif.'
     },
     {
-        square: 16,
-        question: 'Hukum Faraday menyatakan bahwa massa zat yang dihasilkan berbanding lurus dengan...',
-        options: ['Volume larutan', 'Arus listrik dan waktu', 'Tekanan udara', 'Jenis bejana'],
-        correct: 1,
+        question: 'Jika arus 5A dialirkan selama 1930 detik, berapa mol elektron yang dipindahkan? (F=96500). Jawab angka saja.',
+        type: 'essay',
+        correct: '0.1',
         reward: 15,
-        explanation: 'Semakin besar arus dan semakin lama waktu elektrolisis, semakin banyak zat yang dihasilkan.'
+        explanation: 'Menggunakan rumus n = (I × t) / F = (5 × 1930) / 96500 = 0.1 mol'
     },
     {
-        square: 24,
-        question: 'Pada penyepuhan logam, ion logam apa yang biasanya menempel di katoda?',
-        options: ['Ion logam yang sama dengan benda kerja', 'Ion hidrogen', 'Ion oksigen', 'Ion klorida'],
-        correct: 0,
-        reward: 15,
-        explanation: 'Proses elektroplating memakai ion logam yang sama dengan logam pelapis agar menempel di katoda.'
-    },
-    {
-        square: 30,
-        question: 'Mengapa larutan elektrolit harus dapat menghantarkan listrik?',
+        question: 'Mengapa sel elektrolisis membutuhkan sumber listrik searah (DC)?',
+        type: 'multiple',
         options: [
-            'Agar larutan tetap jernih',
-            'Supaya ion bisa bergerak membawa muatan',
-            'Untuk mendinginkan sistem',
-            'Agar elektroda tidak korosif'
+            'Agar elektron mengalir satu arah tetap ke elektroda',
+            'Supaya elektroda tetap bersuhu rendah',
+            'Untuk membuat larutan berputar',
+            'Agar reaksi berlangsung spontan'
+        ],
+        correct: 0,
+        reward: 10,
+        explanation: 'Arus DC menjaga arah aliran elektron sehingga katoda dan anoda memiliki peran tetap selama proses.'
+    },
+    {
+        question: 'Berapa waktu (detik) yang diperlukan untuk mengendapkan 5.4 gram perak dengan arus 1A? (Ar Ag=108, F=96500, valensi=1). Jawab angka saja.',
+        type: 'essay',
+        correct: '4825',
+        reward: 15,
+        explanation: 'Menggunakan rumus t = (m × n × F) / (I × Ar) = (5.4 × 1 × 96500) / (1 × 108) = 4825 detik'
+    },
+    {
+        question: 'Elektroda inert sering dipilih karena...',
+        type: 'multiple',
+        options: [
+            'Mereka ikut bereaksi menghasilkan gas tambahan',
+            'Mereka tidak ikut bereaksi sehingga hanya menyalurkan elektron',
+            'Mereka membuat arus menjadi AC',
+            'Mereka mengubah larutan menjadi padat'
+        ],
+        correct: 1,
+        reward: 10,
+        explanation: 'Elektroda inert seperti grafit tidak teroksidasi atau tereduksi, sehingga hanya menjadi pengantar elektron.'
+    },
+    {
+        question: 'Produk utama industri dari proses chlor-alkali adalah...',
+        type: 'multiple',
+        options: [
+            'Asam sulfat dan gas oksigen',
+            'Natrium hidroksida, gas klorin, dan gas hidrogen',
+            'Perak murni dan gas nitrogen',
+            'Tembaga murni dan gas karbon dioksida'
         ],
         correct: 1,
         reward: 15,
-        explanation: 'Ion dalam larutan bertugas menghantarkan muatan listrik sehingga reaksi elektrolisis dapat berlangsung.'
+        explanation: 'Elektrolisis brine menghasilkan NaOH, Cl₂, dan H₂ yang menjadi bahan penting berbagai industri.'
+    },
+    {
+        question: 'Berapa volume gas H₂ (liter, STP) yang dihasilkan jika arus 4A dialirkan selama 2412.5 detik? (F=96500, Vm=22.4 L/mol). Jawab angka saja.',
+        type: 'essay',
+        correct: '1.12',
+        reward: 15,
+        explanation: 'mol e = (4 × 2412.5)/96500 = 0.1 mol. Untuk H₂: 2e⁻ → 1 H₂, jadi mol H₂ = 0.05. Volume = 0.05 × 22.4 = 1.12 L'
     }
 ];
 
 const questionMap = new Map();
-gameQuestions.forEach(q => questionMap.set(q.square, q));
+
+function assignQuestionSquares() {
+    questionMap.clear();
+
+    const blockedSquares = new Set([1, BOARD_SIZE]);
+    Object.keys(ladders).forEach(key => {
+        const start = Number(key);
+        const end = Number(ladders[start]);
+        blockedSquares.add(start);
+        blockedSquares.add(end);
+    });
+    Object.keys(snakes).forEach(key => {
+        const start = Number(key);
+        const end = Number(snakes[start]);
+        blockedSquares.add(start);
+        blockedSquares.add(end);
+    });
+
+    const availableSquares = [];
+    for (let square = 2; square < BOARD_SIZE; square++) {
+        if (!blockedSquares.has(square)) {
+            availableSquares.push(square);
+        }
+    }
+
+    const pool = [...availableSquares];
+    gameQuestions.forEach(question => {
+        if (pool.length === 0) {
+            return;
+        }
+        const index = Math.floor(Math.random() * pool.length);
+        const square = pool.splice(index, 1)[0];
+        const questionData = { ...question, square };
+        questionMap.set(square, questionData);
+    });
+}
 
 const tokenOffsets = [
     { top: 6, left: 6 },
@@ -980,7 +1280,8 @@ let isRolling = false;
 let isQuestionOpen = false;
 let pendingAdvanceCallback = null;
 let questionAnswered = false;
-let winner = null;
+let winners = []; // Array untuk menyimpan 3 pemenang
+let gameEnded = false;
 const answeredQuestions = new Set();
 
 function updateStatus(message) {
@@ -995,9 +1296,9 @@ function updateStatus(message) {
         if (!panel) {
             return;
         }
-        panel.classList.toggle('active', index === currentPlayerIndex && winner === null);
-        panel.classList.toggle('winner', index === winner);
-        panel.setAttribute('aria-current', index === currentPlayerIndex && winner === null ? 'true' : 'false');
+        panel.classList.toggle('active', index === currentPlayerIndex && !gameEnded);
+        panel.classList.toggle('winner', winners.includes(index));
+        panel.setAttribute('aria-current', index === currentPlayerIndex && !gameEnded ? 'true' : 'false');
         const positionLabel = playerPositionEls[index];
         const scoreLabel = playerScoreEls[index];
         if (positionLabel) {
@@ -1032,73 +1333,98 @@ function createBoard() {
     if (!boardElement) return;
     boardElement.innerHTML = '';
 
+    const totalRows = Math.ceil(BOARD_SIZE / ROW_SIZE);
     const rows = [];
-    let number = 1;
-    for (let row = 0; row < BOARD_SIZE / ROW_SIZE; row++) {
+
+    for (let rowFromBottom = 0; rowFromBottom < totalRows; rowFromBottom++) {
         const rowNumbers = [];
-        for (let col = 0; col < ROW_SIZE; col++) {
-            rowNumbers.push(number++);
+        const startNumber = rowFromBottom * ROW_SIZE + 1;
+        for (let offset = 0; offset < ROW_SIZE; offset++) {
+            const squareNumber = startNumber + offset;
+            rowNumbers.push(squareNumber <= BOARD_SIZE ? squareNumber : null);
         }
-        if (row % 2 === 1) {
+        if (rowFromBottom % 2 === 1) {
             rowNumbers.reverse();
         }
         rows.push(rowNumbers);
     }
 
-    rows.reverse();
-    rows.flat().forEach(squareNumber => {
-        const square = document.createElement('div');
-        square.className = 'board-square';
-        square.dataset.square = squareNumber.toString();
+    for (let rowIndex = rows.length - 1; rowIndex >= 0; rowIndex--) {
+        rows[rowIndex].forEach(squareNumber => {
+            if (squareNumber === null) {
+                const filler = document.createElement('div');
+                filler.className = 'board-square placeholder';
+                boardElement.appendChild(filler);
+                return;
+            }
 
-        if (ladders[squareNumber]) {
-            square.classList.add('ladder-start');
-        }
-        if (snakes[squareNumber]) {
-            square.classList.add('snake-start');
-        }
-        if (questionMap.has(squareNumber)) {
-            square.classList.add('question-square');
-        }
-        if (squareNumber === 1) {
-            square.classList.add('square-start');
-        }
-        if (squareNumber === BOARD_SIZE) {
-            square.classList.add('square-finish');
-        }
+            const square = document.createElement('div');
+            square.className = 'board-square';
+            square.dataset.square = squareNumber.toString();
 
-        const inner = document.createElement('div');
-        inner.className = 'square-inner';
+            if (ladders[squareNumber]) {
+                square.classList.add('ladder-start');
+            }
+            if (snakes[squareNumber]) {
+                square.classList.add('snake-start');
+            }
+            if (questionMap.has(squareNumber)) {
+                square.classList.add('question-square');
+            }
+            if (squareNumber === 1) {
+                square.classList.add('square-start');
+            }
+            if (squareNumber === BOARD_SIZE) {
+                square.classList.add('square-finish');
+            }
 
-        const numberTag = document.createElement('span');
-        numberTag.className = 'square-number';
-        numberTag.textContent = squareNumber;
-        inner.appendChild(numberTag);
+            const inner = document.createElement('div');
+            inner.className = 'square-inner';
 
-        if (ladders[squareNumber]) {
-            const tag = document.createElement('span');
-            tag.className = 'square-tag ladder-tag';
-            tag.textContent = `Naik ke ${ladders[squareNumber]}`;
-            inner.appendChild(tag);
-        }
+            if (squareNumber === 1) {
+                const startTag = document.createElement('span');
+                startTag.className = 'square-marker start-marker';
+                startTag.textContent = 'Start';
+                inner.appendChild(startTag);
+            }
 
-        if (snakes[squareNumber]) {
-            const tag = document.createElement('span');
-            tag.className = 'square-tag snake-tag';
-            tag.textContent = `Turun ke ${snakes[squareNumber]}`;
-            inner.appendChild(tag);
-        }
+            const numberTag = document.createElement('span');
+            numberTag.className = 'square-number';
+            numberTag.textContent = squareNumber;
+            inner.appendChild(numberTag);
 
-        if (questionMap.has(squareNumber)) {
-            const tag = document.createElement('span');
-            tag.className = 'square-tag question-tag';
-            tag.textContent = 'Soal!';
-            inner.appendChild(tag);
-        }
+            if (ladders[squareNumber]) {
+                const tag = document.createElement('span');
+                tag.className = 'square-tag ladder-tag';
+                tag.textContent = `Naik ke ${ladders[squareNumber]}`;
+                inner.appendChild(tag);
+            }
 
-        square.appendChild(inner);
-        boardElement.appendChild(square);
-    });
+            if (snakes[squareNumber]) {
+                const tag = document.createElement('span');
+                tag.className = 'square-tag snake-tag';
+                tag.textContent = `Turun ke ${snakes[squareNumber]}`;
+                inner.appendChild(tag);
+            }
+
+            if (questionMap.has(squareNumber)) {
+                const tag = document.createElement('span');
+                tag.className = 'square-tag question-tag';
+                tag.textContent = 'Soal!';
+                inner.appendChild(tag);
+            }
+
+            if (squareNumber === BOARD_SIZE) {
+                const finishTag = document.createElement('span');
+                finishTag.className = 'square-marker finish-marker';
+                finishTag.textContent = 'Finish';
+                inner.appendChild(finishTag);
+            }
+
+            square.appendChild(inner);
+            boardElement.appendChild(square);
+        });
+    }
 
     playerTokenEls = players.map((player, index) => {
         const token = document.createElement('div');
@@ -1147,23 +1473,243 @@ function animateDice(finalValue, onComplete) {
 }
 
 function canRollDice() {
-    return !isRolling && !isQuestionOpen && winner === null;
+    return !isRolling && !isQuestionOpen && !gameEnded;
+}
+
+// Audio untuk lempar dadu (seperti Ludo)
+function playDiceSound() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Suara dadu menggelinding dan jatuh seperti Ludo
+    const numBounces = 8;
+    
+    for (let i = 0; i < numBounces; i++) {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        
+        oscillator.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        // Noise-like sound untuk efek dadu
+        oscillator.type = 'square';
+        oscillator.frequency.value = 80 + Math.random() * 120;
+        
+        filter.type = 'lowpass';
+        filter.frequency.value = 800 + Math.random() * 400;
+        
+        const startTime = audioCtx.currentTime + i * 0.06;
+        const duration = 0.04 + (i * 0.008);
+        
+        // Volume menurun seiring waktu (dadu melambat)
+        const volume = 0.25 * (1 - i / numBounces);
+        gainNode.gain.setValueAtTime(volume, startTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+    }
+    
+    // Suara "tok" akhir saat dadu berhenti
+    setTimeout(() => {
+        const finalOsc = audioCtx.createOscillator();
+        const finalGain = audioCtx.createGain();
+        
+        finalOsc.connect(finalGain);
+        finalGain.connect(audioCtx.destination);
+        
+        finalOsc.type = 'sine';
+        finalOsc.frequency.value = 150;
+        
+        finalGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        finalGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        
+        finalOsc.start(audioCtx.currentTime);
+        finalOsc.stop(audioCtx.currentTime + 0.1);
+    }, numBounces * 60);
+}
+
+// Audio dan animasi kemenangan
+function playVictorySound() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Fanfare kemenangan - nada naik
+    const notes = [523, 587, 659, 698, 784, 880, 988, 1047]; // C5 ke C6
+    
+    notes.forEach((freq, i) => {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.frequency.value = freq;
+        oscillator.type = 'sine';
+        
+        const startTime = audioCtx.currentTime + i * 0.12;
+        gainNode.gain.setValueAtTime(0.3, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.01, startTime + 0.15);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.15);
+    });
+}
+
+function showMiniVictoryAnimation(playerIndex, rank) {
+    const player = players[playerIndex];
+    const rankText = rank === 1 ? '🥇 Juara 1' : rank === 2 ? '🥈 Juara 2' : '🥉 Juara 3';
+    
+    // Buat overlay animasi mini
+    const overlay = document.createElement('div');
+    overlay.className = 'mini-victory-overlay';
+    
+    overlay.innerHTML = `
+        <div class="mini-victory-content">
+            <div class="mini-victory-emoji">🎉</div>
+            <h2 class="mini-victory-title">${player.name}</h2>
+            <p class="mini-victory-rank">${rankText}</p>
+            <div class="mini-confetti-container"></div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    
+    // Tambahkan confetti mini
+    const confettiContainer = overlay.querySelector('.mini-confetti-container');
+    const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#7c4dff', '#ff9f43', '#00c9a7'];
+    
+    for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 1 + 's';
+        confetti.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+        confettiContainer.appendChild(confetti);
+    }
+    
+    // Play victory sound
+    playVictorySound();
+    
+    // Hapus overlay setelah 2.5 detik
+    setTimeout(() => {
+        overlay.classList.add('fade-out');
+        setTimeout(() => overlay.remove(), 500);
+    }, 2500);
+}
+
+function showVictoryAnimation() {
+    // Buat overlay animasi
+    const overlay = document.createElement('div');
+    overlay.className = 'victory-overlay';
+    
+    // Leaderboard 1: Urutan Finish
+    const finishLeaderboard = winners.map((winnerIdx, rank) => {
+        const medal = rank === 0 ? '🥇' : rank === 1 ? '🥈' : '🥉';
+        return `<div class="leaderboard-item">${medal} ${players[winnerIdx].name}</div>`;
+    }).join('');
+    
+    // Leaderboard 2: Urutan Point (semua pemain, ambil top 3)
+    const sortedByScore = [...players]
+        .map((p, idx) => ({ ...p, originalIndex: idx }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+    
+    const scoreLeaderboard = sortedByScore.map((p, rank) => {
+        const medal = rank === 0 ? '🥇' : rank === 1 ? '🥈' : '🥉';
+        return `<div class="leaderboard-item">${medal} ${p.name} - ${p.score} poin</div>`;
+    }).join('');
+    
+    overlay.innerHTML = `
+        <div class="victory-content victory-leaderboard">
+            <div class="victory-trophy">🏆</div>
+            <h2 class="victory-title">GAME SELESAI!</h2>
+            
+            <div class="leaderboards-container">
+                <div class="leaderboard-box">
+                    <h3 class="leaderboard-title">🏁 Urutan Finish</h3>
+                    <div class="leaderboard-list">
+                        ${finishLeaderboard}
+                    </div>
+                </div>
+                
+                <div class="leaderboard-box">
+                    <h3 class="leaderboard-title">⭐ Perolehan Poin</h3>
+                    <div class="leaderboard-list">
+                        ${scoreLeaderboard}
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-primary victory-close-btn" onclick="closeLeaderboardAndReset()">Main Lagi</button>
+            <div class="confetti-container"></div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    
+    // Tambahkan confetti
+    const confettiContainer = overlay.querySelector('.confetti-container');
+    const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#7c4dff', '#ff9f43', '#00c9a7'];
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+        confettiContainer.appendChild(confetti);
+    }
+    
+    // Play victory sound
+    playVictorySound();
 }
 
 function handleVictory(playerIndex) {
-    winner = playerIndex;
-    updateStatus(`🎉 ${players[playerIndex].name} mencapai petak ${BOARD_SIZE} dan menang!`);
-    if (rollDiceBtn) {
-        rollDiceBtn.disabled = true;
+    // Tambahkan ke daftar pemenang jika belum ada
+    if (!winners.includes(playerIndex)) {
+        winners.push(playerIndex);
+        const rank = winners.length;
+        const rankText = rank === 1 ? 'Juara 1' : rank === 2 ? 'Juara 2' : 'Juara 3';
+        updateStatus(`🎉 ${players[playerIndex].name} finish sebagai ${rankText}!`);
+        
+        // Tampilkan animasi mini untuk setiap pemenang
+        showMiniVictoryAnimation(playerIndex, rank);
+        
+        // Jika sudah 3 pemenang, game selesai
+        if (winners.length >= 3) {
+            gameEnded = true;
+            if (rollDiceBtn) {
+                rollDiceBtn.disabled = true;
+            }
+            pendingAdvanceCallback = null;
+            isRolling = false;
+            
+            // Tampilkan leaderboard setelah delay
+            setTimeout(() => showVictoryAnimation(), 1000);
+            return;
+        }
     }
+    
     pendingAdvanceCallback = null;
     isRolling = false;
 }
 
 function processLanding(playerIndex, onComplete) {
     const player = players[playerIndex];
+    
+    // Jika pemain sudah finish, skip
+    if (winners.includes(playerIndex)) {
+        onComplete();
+        return;
+    }
+    
     if (player.position === BOARD_SIZE) {
         handleVictory(playerIndex);
+        // Lanjutkan game jika belum 3 pemenang
+        if (!gameEnded) {
+            onComplete();
+        }
         return;
     }
 
@@ -1182,16 +1728,13 @@ function processLanding(playerIndex, onComplete) {
     }
 
     if (questionMap.has(player.position)) {
-        if (!answeredQuestions.has(player.position)) {
-            updateStatus('Petak soal! Jawab pertanyaan elektrolisis.');
-            pendingAdvanceCallback = () => {
-                isRolling = false;
-                advanceTurn();
-            };
-            handleQuestion(player.position, playerIndex);
-            return;
-        }
-        updateStatus('Kamu sudah menaklukkan soal ini, lanjutkan perjalanan!');
+        updateStatus('Petak soal! Jawab pertanyaan elektrolisis.');
+        pendingAdvanceCallback = () => {
+            isRolling = false;
+            advanceTurn();
+        };
+        handleQuestion(player.position, playerIndex);
+        return;
     }
 
     onComplete();
@@ -1213,37 +1756,80 @@ function handleQuestion(squareNumber, playerIndex) {
     closeQuestionBtn?.classList.add('hidden');
     questionAnswered = false;
 
-    questionData.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'game-option-btn';
-        button.textContent = option;
-        button.addEventListener('click', () => {
-            if (button.disabled) {
-                return;
-            }
-            Array.from(gameOptionsEl.children).forEach(opt => {
-                opt.disabled = true;
-            });
-            if (index === questionData.correct) {
-                button.classList.add('correct');
+    if (questionData.type === 'essay') {
+        // Soal essay
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'game-essay-container';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'game-essay-input';
+        input.placeholder = 'Masukkan jawaban (angka saja)';
+        input.inputMode = 'decimal';
+        
+        const submitBtn = document.createElement('button');
+        submitBtn.type = 'button';
+        submitBtn.className = 'game-option-btn game-submit-btn';
+        submitBtn.textContent = 'Jawab';
+        
+        submitBtn.addEventListener('click', () => {
+            if (submitBtn.disabled) return;
+            
+            const userAnswer = input.value.trim().replace(',', '.');
+            submitBtn.disabled = true;
+            input.disabled = true;
+            
+            if (userAnswer === questionData.correct) {
+                input.classList.add('correct');
                 players[playerIndex].score += questionData.reward;
                 updateStatus(`${players[playerIndex].name} benar! ${questionData.explanation}`);
+                playCorrectSound();
             } else {
-                button.classList.add('incorrect');
-                const correctBtn = gameOptionsEl.children[questionData.correct];
-                if (correctBtn) {
-                    correctBtn.classList.add('correct');
-                }
-                updateStatus(`${players[playerIndex].name} belum tepat. ${questionData.explanation}`);
+                input.classList.add('incorrect');
+                updateStatus(`${players[playerIndex].name} belum tepat. Jawaban: ${questionData.correct}. ${questionData.explanation}`);
+                playIncorrectSound();
             }
             answeredQuestions.add(squareNumber);
             questionAnswered = true;
             closeQuestionBtn?.classList.remove('hidden');
             closeQuestionBtn?.focus();
         });
-        gameOptionsEl.appendChild(button);
-    });
+        
+        inputContainer.appendChild(input);
+        inputContainer.appendChild(submitBtn);
+        gameOptionsEl.appendChild(inputContainer);
+    } else {
+        // Soal pilihan ganda
+        questionData.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'game-option-btn';
+            button.textContent = option;
+            button.addEventListener('click', () => {
+                if (button.disabled) {
+                    return;
+                }
+                Array.from(gameOptionsEl.children).forEach(opt => {
+                    opt.disabled = true;
+                });
+                if (index === questionData.correct) {
+                    button.classList.add('correct');
+                    players[playerIndex].score += questionData.reward;
+                    updateStatus(`${players[playerIndex].name} benar! ${questionData.explanation}`);
+                    playCorrectSound();
+                } else {
+                    button.classList.add('incorrect');
+                    updateStatus(`${players[playerIndex].name} belum tepat. ${questionData.explanation}`);
+                    playIncorrectSound();
+                }
+                answeredQuestions.add(squareNumber);
+                questionAnswered = true;
+                closeQuestionBtn?.classList.remove('hidden');
+                closeQuestionBtn?.focus();
+            });
+            gameOptionsEl.appendChild(button);
+        });
+    }
 }
 
 function finishQuestionModal() {
@@ -1251,7 +1837,7 @@ function finishQuestionModal() {
     questionModal.classList.add('hidden');
     isQuestionOpen = false;
     questionAnswered = false;
-    if (winner === null && rollDiceBtn) {
+    if (!gameEnded && rollDiceBtn) {
         rollDiceBtn.disabled = false;
     }
     if (typeof pendingAdvanceCallback === 'function') {
@@ -1264,8 +1850,17 @@ function finishQuestionModal() {
 }
 
 function advanceTurn() {
-    if (winner !== null) return;
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    if (gameEnded) return;
+    
+    // Cari pemain berikutnya yang belum finish
+    let nextPlayer = (currentPlayerIndex + 1) % players.length;
+    let attempts = 0;
+    while (winners.includes(nextPlayer) && attempts < players.length) {
+        nextPlayer = (nextPlayer + 1) % players.length;
+        attempts++;
+    }
+    
+    currentPlayerIndex = nextPlayer;
     if (rollDiceBtn) {
         rollDiceBtn.disabled = false;
     }
@@ -1301,7 +1896,18 @@ function handleRoll() {
     const roll = Math.floor(Math.random() * 6) + 1;
     const currentPlayer = players[currentPlayerIndex];
     updateStatus(`${currentPlayer.name} sedang mengocok dadu...`);
+    playDiceSound();
     animateDice(roll, () => performMove(roll));
+}
+
+function closeLeaderboardAndReset() {
+    // Hapus overlay leaderboard
+    const overlay = document.querySelector('.victory-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+    // Reset game
+    resetGame();
 }
 
 function resetGame() {
@@ -1311,7 +1917,8 @@ function resetGame() {
     });
     answeredQuestions.clear();
     currentPlayerIndex = 0;
-    winner = null;
+    winners = [];
+    gameEnded = false;
     statusMessage = `Giliran ${players[0].name}, lempar dadu!`;
     questionAnswered = false;
     isRolling = false;
@@ -1325,6 +1932,7 @@ function resetGame() {
         questionModal.classList.add('hidden');
     }
     closeQuestionBtn?.classList.add('hidden');
+    assignQuestionSquares();
     createBoard();
     updateStatus(statusMessage);
     if (rollDiceBtn) {
@@ -1358,6 +1966,7 @@ if (resetGameBtn) {
     resetGameBtn.addEventListener('click', resetGame);
 }
 
+assignQuestionSquares();
 createBoard();
 updateStatus(statusMessage);
 animate();

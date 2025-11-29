@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img" aria-labelledby="title desc">
+  <title id="title">Diagram Sel Elektrolisis</title>
+  <desc id="desc">Diagram sederhana yang menunjukkan katoda, anoda, sumber DC, dan larutan elektrolit.</desc>
+  <rect x="0" y="0" width="800" height="420" fill="#f5f7ff" />
+
+  <text x="400" y="48" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#1f1f3d">Diagram Sel Elektrolisis</text>
+
+  <rect x="250" y="92" width="300" height="60" rx="16" fill="#55617b" />
+  <text x="400" y="128" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#ffffff">Sumber DC</text>
+  <text x="248" y="116" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#f55a5a">-</text>
+  <text x="552" y="116" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#f55a5a">+</text>
+
+  <line x1="275" y1="152" x2="210" y2="210" stroke="#2f3b52" stroke-width="6" />
+  <line x1="525" y1="152" x2="590" y2="210" stroke="#2f3b52" stroke-width="6" />
+
+  <rect x="180" y="210" width="440" height="150" rx="22" fill="#cfe4ff" />
+  <text x="400" y="260" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#1f3c88">Larutan Elektrolit</text>
+
+  <rect x="190" y="180" width="60" height="200" fill="#31405a" rx="12" />
+  <rect x="550" y="180" width="60" height="200" fill="#31405a" rx="12" />
+
+  <text x="220" y="392" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#1f1f3d">Katoda (-)</text>
+  <text x="220" y="412" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#04a6c2">Reduksi</text>
+
+  <text x="580" y="392" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#1f1f3d">Anoda (+)</text>
+  <text x="580" y="412" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#04a6c2">Oksidasi</text>
+
+  <circle cx="360" cy="300" r="18" fill="#f55a5a" />
+  <text x="360" y="306" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#ffffff">+</text>
+  <circle cx="430" cy="320" r="18" fill="#2c7be5" />
+  <text x="430" y="326" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#ffffff">-</text>
+  <circle cx="470" cy="280" r="14" fill="#2c7be5" />
+  <text x="470" y="284" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#ffffff">-</text>
+  <circle cx="320" cy="280" r="14" fill="#f55a5a" />
+  <text x="320" y="284" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#ffffff">+</text>
+
+  <path d="M 204 210 Q 160 190 142 200" fill="none" stroke="#ffaa33" stroke-width="5" marker-end="url(#arrow)" />
+  <text x="118" y="198" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#ffaa33">e-</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#ffaa33" />
+    </marker>
+  </defs>
+</svg>

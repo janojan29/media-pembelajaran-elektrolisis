@@ -67,6 +67,11 @@
                         <p>Uji pemahamanmu dengan pertanyaan pilihan ganda dan dapatkan skor terbaikmu.</p>
                         <button class="btn-path tab-trigger" data-target="kuis">Kerjakan Kuis</button>
                     </article>
+                    <article class="path-card">
+                        <h3>Game Edukatif</h3>
+                        <p>Mainkan ular tangga bertema elektrolisis dan jawab pertanyaan setiap mendarat di kotak khusus.</p>
+                        <button class="btn-path tab-trigger" data-target="game">Mainkan Game</button>
+                    </article>
                 </div>
             </section>
         </div>
@@ -74,114 +79,494 @@
         <!-- Tab Teori -->
         <div class="tab-content" id="teori">
             <div class="theory-section">
+                <div class="theory-subnav" role="tablist" aria-label="Sub materi sel elektrolisis">
+                    <button class="theory-tab-btn active" role="tab" aria-selected="true" data-target="tab-pengertian">Pengertian</button>
+                    <button class="theory-tab-btn" role="tab" aria-selected="false" data-target="tab-perbedaan">Perbedaan Sel</button>
+                    <button class="theory-tab-btn" role="tab" aria-selected="false" data-target="tab-komponen">Komponen</button>
+                    <button class="theory-tab-btn" role="tab" aria-selected="false" data-target="tab-alur">Alur Kerja</button>
+                    <button class="theory-tab-btn" role="tab" aria-selected="false" data-target="tab-nacl">Contoh NaCl</button>
+                    <button class="theory-tab-btn" role="tab" aria-selected="false" data-target="tab-cuso4">Contoh CuSO₄</button>
+                </div>
+
+                <div class="theory-panels">
+                    <section class="theory-tab-panel active" id="tab-pengertian" role="tabpanel" aria-hidden="false">
+                        <h2>Pengertian Elektrolisis</h2>
+                        <div class="card definition-card">
+                            <p><span class="term-highlight">Elektrolisis</span> adalah proses penguraian senyawa kimia menjadi unsur-unsur penyusunnya atau senyawa yang lebih sederhana dengan menggunakan arus listrik searah (DC). Dalam proses ini, energi listrik diubah menjadi energi kimia.</p>
+                            <p>Elektrolisis merupakan kebalikan dari sel galvani. Jika sel galvani menghasilkan listrik dari reaksi kimia spontan, maka elektrolisis menggunakan listrik untuk memaksa terjadinya reaksi kimia yang tidak spontan.</p>
+
+                            <div class="definition-highlights">
+                                <button class="definition-item" type="button" aria-expanded="false" aria-label="Elektrolisis, klik untuk melihat penjelasan">
+                                    <span class="definition-flip">
+                                        <span class="definition-face definition-front" aria-hidden="false">
+                                            <span class="definition-title">Elektrolisis</span>
+                                        </span>
+                                        <span class="definition-face definition-back" aria-hidden="true">
+                                            <strong>Elektrolisis</strong>
+                                            <span class="definition-text">Penguraian senyawa dengan bantuan arus DC untuk menghasilkan zat baru yang lebih sederhana.</span>
+                                        </span>
+                                    </span>
+                                </button>
+                                <button class="definition-item" type="button" aria-expanded="false" aria-label="Perubahan energi, klik untuk melihat penjelasan">
+                                    <span class="definition-flip">
+                                        <span class="definition-face definition-front" aria-hidden="false">
+                                            <span class="definition-title">Perubahan Energi</span>
+                                        </span>
+                                        <span class="definition-face definition-back" aria-hidden="true">
+                                            <strong>Perubahan Energi</strong>
+                                            <span class="definition-text">Energi listrik dari sumber DC diubah menjadi energi kimia di dalam sel.</span>
+                                        </span>
+                                    </span>
+                                </button>
+                                <button class="definition-item" type="button" aria-expanded="false" aria-label="Sifat reaksi, klik untuk melihat penjelasan">
+                                    <span class="definition-flip">
+                                        <span class="definition-face definition-front" aria-hidden="false">
+                                            <span class="definition-title">Sifat Reaksi</span>
+                                        </span>
+                                        <span class="definition-face definition-back" aria-hidden="true">
+                                            <strong>Sifat Reaksi</strong>
+                                            <span class="definition-text">Reaksi bersifat tidak spontan dan hanya terjadi karena dipaksa oleh tegangan listrik.</span>
+                                        </span>
+                                    </span>
+                                </button>
+                                <button class="definition-item" type="button" aria-expanded="false" aria-label="Arus listrik, klik untuk melihat penjelasan">
+                                    <span class="definition-flip">
+                                        <span class="definition-face definition-front" aria-hidden="false">
+                                            <span class="definition-title">Arus Listrik</span>
+                                        </span>
+                                        <span class="definition-face definition-back" aria-hidden="true">
+                                            <strong>Arus Listrik</strong>
+                                            <span class="definition-text">Menggunakan arus searah agar ion bergerak menuju elektroda yang bermuatan lawan.</span>
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
+
+                            <h3>Komponen Utama:</h3>
+                            <ul>
+                                <li><strong>Katoda (-)</strong>: Elektroda negatif, tempat terjadi reduksi</li>
+                                <li><strong>Anoda (+)</strong>: Elektroda positif, tempat terjadi oksidasi</li>
+                                <li><strong>Elektrolit</strong>: Larutan atau lelehan yang menghantarkan listrik</li>
+                                <li><strong>Sumber Arus</strong>: Baterai atau adaptor DC</li>
+                            </ul>
+
+                            <h3>Proses Elektrolisis:</h3>
+                            <ol>
+                                <li>Arus listrik dialirkan melalui elektrolit</li>
+                                <li>Ion positif (kation) bergerak ke katoda</li>
+                                <li>Ion negatif (anion) bergerak ke anoda</li>
+                                <li>Terjadi reaksi redoks di kedua elektroda</li>
+                            </ol>
+
+                            <div class="info-box">
+                                <h4>Hukum Faraday:</h4>
+                                <p>Massa zat yang diendapkan berbanding lurus dengan jumlah muatan listrik yang mengalir.</p>
+                                <p class="formula">m = (Q × Mr) / (n × F)</p>
+                                <p class="formula-desc">
+                                    m = massa (gram)<br>
+                                    Q = muatan listrik (Coulomb)<br>
+                                    Mr = massa molekul relatif<br>
+                                    n = jumlah elektron<br>
+                                    F = konstanta Faraday (96.500 C/mol)
+                                </p>
+                            </div>
+
+                            <div class="application-panel" role="region" aria-label="Aplikasi elektrolisis dalam kehidupan sehari-hari">
+                                <div class="application-header">
+                                    <h3>Aplikasi Elektrolisis dalam Kehidupan</h3>                                </div>
+                                <ol class="application-list">
+                                    <li>
+                                        <strong>Penyepuhan (Electroplating)</strong>
+                                        <p>Melapisi logam dengan logam lain yang lebih tahan korosi atau indah, misalnya melapisi perhiasan dengan emas atau perak.</p>
+                                    </li>
+                                    <li>
+                                        <strong>Pemurnian Logam</strong>
+                                        <p>Memurnikan logam seperti tembaga dari pengotor untuk menghasilkan tembaga murni berkualitas tinggi pada kabel listrik.</p>
+                                    </li>
+                                    <li>
+                                        <strong>Produksi Aluminium</strong>
+                                        <p>Menghasilkan aluminium dari bijih bauksit melalui proses elektrolisis lelehan aluminium oksida.</p>
+                                    </li>
+                                    <li>
+                                        <strong>Produksi Gas Klorin dan NaOH</strong>
+                                        <p>Elektrolisis larutan NaCl menghasilkan gas klorin untuk desinfektan dan NaOH sebagai bahan baku industri sabun.</p>
+                                    </li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section class="theory-tab-panel" id="tab-perbedaan" role="tabpanel" aria-hidden="true">
+                        <h2>Perbedaan Sel Galvanik dan Sel Elektrolisis</h2>
+                        <p class="panel-intro">Sel galvanik dan sel elektrolisis sama-sama sel elektrokimia, namun arahan energinya berlawanan. Ringkasan berikut membantu membedakan karakter utama keduanya.</p>
+
+                        <div class="difference-table-wrapper">
+                            <table class="difference-table" aria-label="Perbandingan sel galvanik dan sel elektrolisis">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Aspek</th>
+                                        <th scope="col">Sel Elektrolisis</th>
+                                        <th scope="col">Sel Galvanik</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Perubahan Energi</th>
+                                        <td>Energi listrik → Energi kimia</td>
+                                        <td>Energi kimia → Energi listrik</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Sifat Reaksi</th>
+                                        <td>Tidak spontan</td>
+                                        <td>Spontan</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Sumber Energi</th>
+                                        <td>Memerlukan arus listrik dari luar</td>
+                                        <td>Menghasilkan arus listrik sendiri</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Kutub Anoda</th>
+                                        <td>Kutub positif (+)</td>
+                                        <td>Kutub negatif (-)</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Kutub Katoda</th>
+                                        <td>Kutub negatif (-)</td>
+                                        <td>Kutub positif (+)</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Potensial Sel (E°)</th>
+                                        <td>Negatif (E° &lt; 0)</td>
+                                        <td>Positif (E° &gt; 0)</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Contoh Penerapan</th>
+                                        <td>Penyepuhan, pemurnian logam, produksi klorin</td>
+                                        <td>Baterai, aki, sel bahan bakar</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="electrode-explanations" role="group" aria-label="Penjelasan anoda, katoda, dan reaksi">
+                            <button class="electrode-item" type="button" aria-expanded="false" aria-label="Anoda dalam elektrolisis, klik untuk melihat penjelasan">
+                                <span class="electrode-flip">
+                                    <span class="electrode-face electrode-front" aria-hidden="false">
+                                        <span class="electrode-title">Anoda dalam Elektrolisis</span>
+                                    </span>
+                                    <span class="electrode-face electrode-back" aria-hidden="true">
+                                        <span class="electrode-text">Elektroda positif (+) tempat terjadinya oksidasi.</span>
+                                    </span>
+                                </span>
+                            </button>
+                            <button class="electrode-item" type="button" aria-expanded="false" aria-label="Katoda dalam elektrolisis, klik untuk melihat penjelasan">
+                                <span class="electrode-flip">
+                                    <span class="electrode-face electrode-front" aria-hidden="false">
+                                        <span class="electrode-title">Katoda dalam Elektrolisis</span>
+                                    </span>
+                                    <span class="electrode-face electrode-back" aria-hidden="true">
+                                        <span class="electrode-text">Elektroda negatif (-) tempat terjadinya reduksi.</span>
+                                    </span>
+                                </span>
+                            </button>
+                            <button class="electrode-item" type="button" aria-expanded="false" aria-label="Reaksi spontan, klik untuk melihat penjelasan">
+                                <span class="electrode-flip">
+                                    <span class="electrode-face electrode-front" aria-hidden="false">
+                                        <span class="electrode-title">Reaksi Spontan?</span>
+                                    </span>
+                                    <span class="electrode-face electrode-back" aria-hidden="true">
+                                        <span class="electrode-text">Sel Galvanik: YA (terjadi sendiri)<br>Sel Elektrolisis: TIDAK (perlu energi)</span>
+                                    </span>
+                                </span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="theory-tab-panel" id="tab-komponen" role="tabpanel" aria-hidden="true">
+                        <h2>Komponen Sel Elektrolisis</h2>
+                        <p class="panel-intro">Setiap bagian memiliki tugas penting supaya ion bisa bergerak dan bereaksi.</p>
+                        <div class="component-grid">
+                            <article class="component-card">
+                                <span class="component-icon">➖</span>
+                                <h4>Katoda (−)</h4>
+                                <p>Tempat kation menerima elektron dan mengalami <strong>reduksi</strong>.</p>
+                            </article>
+                            <article class="component-card">
+                                <span class="component-icon">➕</span>
+                                <h4>Anoda (+)</h4>
+                                <p>Tempat anion melepaskan elektron dan mengalami <strong>oksidasi</strong>.</p>
+                            </article>
+                            <article class="component-card">
+                                <span class="component-icon">💧</span>
+                                <h4>Elektrolit</h4>
+                                <p>Larutan atau lelehan yang menghantarkan listrik sehingga ion bebas bergerak.</p>
+                            </article>
+                            <article class="component-card">
+                                <span class="component-icon">🔋</span>
+                                <h4>Sumber Arus</h4>
+                                <p>Menyuplai energi listrik agar reaksi tak spontan dapat berlangsung.</p>
+                            </article>
+                        </div>
+
+                        <figure class="component-diagram">
+                            <img src="images/diagram-sel-elektrolisis.svg" alt="Diagram sel elektrolisis yang menampilkan sumber DC, katoda, anoda, dan larutan elektrolit." loading="lazy">
+                            <figcaption>Diagram Sel Elektrolisis: elektron dari sumber DC mengalir menuju katoda sehingga reduksi terjadi, sedangkan oksidasi berlangsung di anoda.</figcaption>
+                        </figure>
+
+                        <h3>Contoh Aplikasi:</h3>
+                        <div class="applications">
+                            <div class="app-card">
+                                <span class="app-icon">✨</span>
+                                <h4>Penyepuhan Logam</h4>
+                                <p>Melapisi logam dengan logam lain (emas, perak, nikel)</p>
+                                <small>Contoh: perhiasan, medali, hiasan mini.</small>
+                            </div>
+                            <div class="app-card">
+                                <span class="app-icon">🔧</span>
+                                <h4>Pemurnian Logam</h4>
+                                <p>Memurnikan tembaga dan aluminium</p>
+                                <small>Dipakai agar kabel listrik tidak cepat panas.</small>
+                            </div>
+                            <div class="app-card">
+                                <span class="app-icon">🧪</span>
+                                <h4>Produksi Kimia</h4>
+                                <p>Produksi klorin, natrium hidroksida, dan hidrogen</p>
+                                <small>Klorin bantu menjaga air kolam tetap bersih.</small>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="theory-tab-panel" id="tab-alur" role="tabpanel" aria-hidden="true">
+                        <h2>Alur Kerja Sel Elektrolisis</h2>
+                        <p class="panel-intro">Ikuti alur langkah demi langkah untuk melihat bagaimana energi listrik mengubah ion menjadi produk baru.</p>
+
+                        <div class="process-wrapper">
+                            <ol class="process-timeline">
+                                <li class="timeline-step" data-detail-title="Sambungkan Sumber Energi" data-detail-text="Pastikan polaritas baterai sudah benar agar elektroda tidak tertukar dan alirkan arus secara bertahap.">
+                                    <span class="step-marker" aria-hidden="true">1</span>
+                                    <button class="step-trigger" type="button" aria-expanded="false">
+                                        <div class="step-content">
+                                            <h4>Sambungkan Sumber Energi</h4>
+                                            <p>Tegangan DC dari baterai atau adaptor dihubungkan ke elektroda. Arus listrik mulai mendorong ion bergerak.</p>
+                                        </div>
+                                        <span class="step-chevron" aria-hidden="true">&gt;</span>
+                                    </button>
+                                </li>
+                                <li class="timeline-step" data-detail-title="Ion Mulai Bergerak" data-detail-text="Ion bergerak lebih cepat ketika larutan cukup pekat dan suhu stabil, jadi pastikan kondisi percobaan terjaga.">
+                                    <span class="step-marker" aria-hidden="true">2</span>
+                                    <button class="step-trigger" type="button" aria-expanded="false">
+                                        <div class="step-content">
+                                            <h4>Ion Mulai Bergerak</h4>
+                                            <p>Kation tertarik menuju katoda (kutub negatif), sedangkan anion melaju ke anoda (kutub positif).</p>
+                                        </div>
+                                        <span class="step-chevron" aria-hidden="true">&gt;</span>
+                                    </button>
+                                </li>
+                                <li class="timeline-step" data-detail-title="Reaksi di Katoda" data-detail-text="Amati perubahan warna atau gelembung di katoda sebagai bukti reaksi reduksi yang menambah elektron.">
+                                    <span class="step-marker" aria-hidden="true">3</span>
+                                    <button class="step-trigger" type="button" aria-expanded="false">
+                                        <div class="step-content">
+                                            <h4>Reaksi di Katoda</h4>
+                                            <p>Kation menerima elektron (reduksi) dan berubah menjadi atom netral atau gas hidrogen.</p>
+                                        </div>
+                                        <span class="step-chevron" aria-hidden="true">&gt;</span>
+                                    </button>
+                                </li>
+                                <li class="timeline-step" data-detail-title="Reaksi di Anoda" data-detail-text="Perhatikan gelembung gas atau massa elektroda yang berkurang karena anion melepaskan elektron saat oksidasi.">
+                                    <span class="step-marker" aria-hidden="true">4</span>
+                                    <button class="step-trigger" type="button" aria-expanded="false">
+                                        <div class="step-content">
+                                            <h4>Reaksi di Anoda</h4>
+                                            <p>Anion melepaskan elektron (oksidasi) hingga terbentuk gas atau zat baru di sekitar anoda.</p>
+                                        </div>
+                                        <span class="step-chevron" aria-hidden="true">&gt;</span>
+                                    </button>
+                                </li>
+                                <li class="timeline-step" data-detail-title="Produk Elektrolisis" data-detail-text="Catat massa atau volume produk lalu bandingkan dengan perhitungan Hukum Faraday untuk mengecek akurasi eksperimen.">
+                                    <span class="step-marker" aria-hidden="true">5</span>
+                                    <button class="step-trigger" type="button" aria-expanded="false">
+                                        <div class="step-content">
+                                            <h4>Produk Elektrolisis Terbentuk</h4>
+                                            <p>Elektron yang berpindah mengubah bahan awal menjadi produk bernilai seperti logam murni atau gas industri.</p>
+                                        </div>
+                                        <span class="step-chevron" aria-hidden="true">&gt;</span>
+                                    </button>
+                                </li>
+                            </ol>
+
+                            <aside class="process-side">
+                                <div class="process-card interactive" id="stepDetailCard">
+                                    <h4 id="stepDetailTitle">Telusuri Langkah</h4>
+                                    <p id="stepDetailText">Klik atau sentuh setiap langkah di sebelah kiri untuk melihat catatan eksperimen tambahan.</p>
+                                </div>
+                                <div class="process-card accent">
+                                    <h4>Tidak Spontan</h4>
+                                    <p>Reaksi hanya terjadi saat energi listrik dialirkan. Cabut sumbernya, reaksi berhenti.</p>
+                                </div>
+                                <div class="process-card">
+                                    <h4>Checklist Pengamatan</h4>
+                                    <ul class="process-points">
+                                        <li>Perhatikan gelembung di elektroda.</li>
+                                        <li>Catat perubahan warna atau endapan.</li>
+                                        <li>Bandingkan massa elektroda sebelum dan sesudah.</li>
+                                    </ul>
+                                </div>
+                                <div class="process-card">
+                                    <h4>Tip Sparky 🔌</h4>
+                                    <p>Semakin besar arus dan semakin lama waktu elektrolisis, semakin banyak produk yang dihasilkan.</p>
+                                </div>
+                            </aside>
+                        </div>
+
+                        <div class="fun-facts">
+                            <div class="fun-facts-header">
+                                <h3>Fun Fact Kimia</h3>
+                                <button id="newFunFact" class="btn-chip">Fakta Baru</button>
+                            </div>
+                            <p id="funFactText">Tahukah kamu? Listrik bisa membuat logam berubah warna menjadi mengkilap banget!</p>
+                        </div>
+                    </section>
+
+                    <section class="theory-tab-panel" id="tab-nacl" role="tabpanel" aria-hidden="true">
+                        <h2>Contoh Elektrolisis Larutan NaCl</h2>
+                        <div class="example-card">
+                            <p class="example-intro">Larutan NaCl pekat (brine) dielektrolisis menggunakan elektroda inert untuk menghasilkan tiga produk industri utama sekaligus: NaOH, gas H₂, dan gas Cl₂.</p>
+
+                            <div class="example-meta">
+                                <article class="example-meta-card">
+                                    <h4>Setelan Percobaan</h4>
+                                    <ul>
+                                        <li>Larutan NaCl 20&ndash;25% dalam sel diafragma atau membran.</li>
+                                        <li>Katoda dan anoda berbahan grafit atau titanium berlapis.</li>
+                                        <li>Sumber arus DC 6&ndash;12 V dengan pengadukan ringan.</li>
+                                    </ul>
+                                </article>
+                                <article class="example-meta-card">
+                                    <h4>Fokus Pembelajaran</h4>
+                                    <ul>
+                                        <li>Membedakan ion yang bereaksi di katoda dan anoda.</li>
+                                        <li>Menghubungkan produk dengan Hukum Faraday.</li>
+                                        <li>Mengenali perubahan sifat larutan (menjadi basa).</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="example-grid">
+                                <div>
+                                    <h4>Katoda (Reduksi)</h4>
+                                    <p>2H₂O(l) + 2e⁻ → H₂(g) + 2OH⁻(aq)</p>
+                                    <p><em>Kation Na⁺ tidak direduksi karena potensial reduksi air lebih mudah.</em></p>
+                                </div>
+                                <div>
+                                    <h4>Anoda (Oksidasi)</h4>
+                                    <p>2Cl⁻(aq) → Cl₂(g) + 2e⁻</p>
+                                    <p><em>Anion Cl⁻ teroksidasi menghasilkan gas hijau kekuningan.</em></p>
+                                </div>
+                                <div>
+                                    <h4>Reaksi Keseluruhan</h4>
+                                    <p>2NaCl(aq) + 2H₂O(l) → H₂(g) + Cl₂(g) + 2NaOH(aq)</p>
+                                </div>
+                            </div>
+
+                            <div class="example-steps">
+                                <h4>Alur Ion</h4>
+                                <ol>
+                                    <li>Na⁺ dan H₂O bersaing di katoda; air menang dan melepas H₂.</li>
+                                    <li>Cl⁻ terkumpul di anoda dan melepas elektron membentuk Cl₂.</li>
+                                    <li>Ion OH⁻ tersisa dalam larutan, bergabung dengan Na⁺ menghasilkan NaOH.</li>
+                                </ol>
+                            </div>
+
+                            <div class="example-observations">
+                                <h4>Pengamatan Kunci</h4>
+                                <ul>
+                                    <li>Gelembung halus di katoda yang menyala lembut saat diuji dengan api (gas H₂).</li>
+                                    <li>Gas kuning kehijauan di anoda dengan bau menyengat khas klorin.</li>
+                                    <li>Larutan di sekitar katoda berubah menjadi basa; indikator fenolftalein akan memerah.</li>
+                                </ul>
+                            </div>
+
+                            <div class="example-highlight">
+                                <h4>Produk dan Manfaat</h4>
+                                <p><strong>NaOH</strong> dipisahkan sebagai bahan baku sabun dan kertas, <strong>Cl₂</strong> dipakai untuk desinfeksi dan PVC, sedangkan <strong>H₂</strong> dapat menjadi bahan bakar bersih.</p>
+                                <p>Pastikan ruangan berventilasi karena klorin bersifat toksik dan korosif.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="theory-tab-panel" id="tab-cuso4" role="tabpanel" aria-hidden="true">
+                        <h2>Contoh Elektrolisis Larutan CuSO₄</h2>
+                        <div class="example-card">
+                            <p class="example-intro">Sel elektrolisis CuSO₄ dengan elektroda tembaga dipakai untuk pemurnian dan pelapisan, memindahkan tembaga murni dari anoda ke katoda melalui ion Cu²⁺.</p>
+
+                            <div class="example-meta">
+                                <article class="example-meta-card">
+                                    <h4>Setelan Percobaan</h4>
+                                    <ul>
+                                        <li>Larutan CuSO₄ 0,5&ndash;1 M sebagai elektrolit biru.</li>
+                                        <li>Katoda: lembaran tembaga murni; anoda: tembaga tidak murni.</li>
+                                        <li>Tegangan 3&ndash;5 V dengan arus stabil (0,5&ndash;2 A).</li>
+                                    </ul>
+                                </article>
+                                <article class="example-meta-card">
+                                    <h4>Fokus Pembelajaran</h4>
+                                    <ul>
+                                        <li>Menjelaskan perpindahan massa antar elektroda.</li>
+                                        <li>Mengamati peran ion Cu²⁺ sebagai pembawa muatan.</li>
+                                        <li>Membedakan hasil jika anoda diganti elektroda inert.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="example-grid">
+                                <div>
+                                    <h4>Katoda (Reduksi)</h4>
+                                    <p>Cu²⁺(aq) + 2e⁻ → Cu(s)</p>
+                                    <p><em>Ion Cu²⁺ dari larutan menempel sebagai lapisan tembaga mengkilap.</em></p>
+                                </div>
+                                <div>
+                                    <h4>Anoda (Oksidasi)</h4>
+                                    <p>Cu(s) → Cu²⁺(aq) + 2e⁻</p>
+                                    <p><em>Anoda ikut larut sehingga konsentrasi Cu²⁺ tetap hampir konstan.</em></p>
+                                </div>
+                                <div>
+                                    <h4>Reaksi Keseluruhan</h4>
+                                    <p>Cu(s)<sub>anoda</sub> → Cu(s)<sub>katoda</sub> (pemindahan tembaga murni)</p>
+                                </div>
+                            </div>
+
+                            <div class="example-steps">
+                                <h4>Alur Ion</h4>
+                                <ol>
+                                    <li>Anoda melepaskan Cu²⁺ ke larutan sekaligus meninggalkan pengotor yang mengendap.</li>
+                                    <li>Ion Cu²⁺ bermigrasi menuju katoda mengikuti medan listrik.</li>
+                                    <li>Di katoda, Cu²⁺ menerima elektron dan membentuk lapisan tembaga halus.</li>
+                                </ol>
+                            </div>
+
+                            <div class="example-observations">
+                                <h4>Pengamatan Kunci</h4>
+                                <ul>
+                                    <li>Katoda berubah lebih tebal, halus, dan berkilau oranye kemerahan.</li>
+                                    <li>Anoda menipis; kotoran jatuh sebagai <em>sludge</em> gelap di dasar sel.</li>
+                                    <li>Warna biru larutan relatif tetap karena Cu²⁺ yang terlarut digantikan oleh anoda.</li>
+                                    <li>Jika anoda diganti grafit, terbentuk gas O₂ dan larutan menjadi lebih asam.</li>
+                                </ul>
+                            </div>
+
+                            <div class="example-highlight">
+                                <h4>Produk dan Manfaat</h4>
+                                <p><strong>Tembaga murni</strong> yang menempel di katoda digunakan untuk kabel listrik, PCB, dan pelapisan dekoratif.</p>
+                                <p>Proses ini adalah inti pemurnian tembaga industri; kontrol arus menjaga lapisan agar tidak kasar.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
                 <div class="tab-back">
                     <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
-                </div>
-                <h2>Apa itu Sel Elektrolisis?</h2>
-                <div class="card">
-                    <p><strong>Sel elektrolisis</strong> adalah sel elektrokimia yang menggunakan energi listrik untuk menghasilkan reaksi kimia yang tidak spontan.</p>
-                    
-                    <h3>Komponen Utama:</h3>
-                    <ul>
-                        <li><strong>Katoda (-)</strong>: Elektroda negatif, tempat terjadi reduksi</li>
-                        <li><strong>Anoda (+)</strong>: Elektroda positif, tempat terjadi oksidasi</li>
-                        <li><strong>Elektrolit</strong>: Larutan atau lelehan yang menghantarkan listrik</li>
-                        <li><strong>Sumber Arus</strong>: Baterai atau adaptor DC</li>
-                    </ul>
-
-                    <h3>Proses Elektrolisis:</h3>
-                    <ol>
-                        <li>Arus listrik dialirkan melalui elektrolit</li>
-                        <li>Ion positif (kation) bergerak ke katoda</li>
-                        <li>Ion negatif (anion) bergerak ke anoda</li>
-                        <li>Terjadi reaksi redoks di kedua elektroda</li>
-                    </ol>
-
-                    <div class="info-box">
-                        <h4>Hukum Faraday:</h4>
-                        <p>Massa zat yang diendapkan berbanding lurus dengan jumlah muatan listrik yang mengalir.</p>
-                        <p class="formula">m = (Q × Mr) / (n × F)</p>
-                        <p class="formula-desc">
-                            m = massa (gram)<br>
-                            Q = muatan listrik (Coulomb)<br>
-                            Mr = massa molekul relatif<br>
-                            n = jumlah elektron<br>
-                            F = konstanta Faraday (96.500 C/mol)
-                        </p>
-                    </div>
-
-                    <div class="character-callout">
-                        <div class="mascot-avatar" aria-hidden="true">
-                            <svg viewBox="0 0 160 140">
-                                <circle cx="80" cy="70" r="60" fill="#4dabf7" />
-                                <circle cx="60" cy="60" r="12" fill="#fff" />
-                                <circle cx="100" cy="60" r="12" fill="#fff" />
-                                <circle cx="58" cy="60" r="6" fill="#1a1a1a" />
-                                <circle cx="98" cy="60" r="6" fill="#1a1a1a" />
-                                <path d="M50 90 Q80 110 110 90" stroke="#1a1a1a" stroke-width="6" fill="none" stroke-linecap="round" />
-                                <path d="M52 40 Q80 10 108 40" fill="#ffd166" />
-                            </svg>
-                        </div>
-                        <div class="mascot-bubble">
-                            <h4>Halo, aku Sparky!</h4>
-                            <p>Ayo ikuti aku menjelajah dunia elektrolisis. Klik kartu petualangan di bawah ini untuk membuka rahasia ion!</p>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="journey-title">Kartu Petualangan Ion</h3>
-                <div class="journey-cards">
-                    <div class="journey-card" tabindex="0">
-                        <span class="journey-number">1</span>
-                        <h4>Energi Listrik Datang!</h4>
-                        <p>Ketika baterai dihubungkan, ion-ion mulai bersemangat. Mereka menari siap bergerak ke elektroda.</p>
-                        <p class="journey-flip">Klik untuk fakta rahasia ✨</p>
-                        <div class="journey-secret">Ion bergerak karena tertarik oleh muatan berlawanan, lho!</div>
-                    </div>
-                    <div class="journey-card" tabindex="0">
-                        <span class="journey-number">2</span>
-                        <h4>Kation ke Katoda</h4>
-                        <p>Kation bermuatan positif berlari ke katoda untuk mendapatkan elektron baru dan berubah menjadi atom netral.</p>
-                        <p class="journey-flip">Klik untuk fakta rahasia ✨</p>
-                        <div class="journey-secret">Reduksi terjadi ketika ion menerima elektron.</div>
-                    </div>
-                    <div class="journey-card" tabindex="0">
-                        <span class="journey-number">3</span>
-                        <h4>Anion ke Anoda</h4>
-                        <p>Anion bermuatan negatif menuju anoda untuk melepaskan elektron dan membentuk zat baru.</p>
-                        <p class="journey-flip">Klik untuk fakta rahasia ✨</p>
-                        <div class="journey-secret">Oksidasi artinya ion melepaskan elektron, seperti melepas balon!</div>
-                    </div>
-                </div>
-
-                <div class="fun-facts">
-                    <div class="fun-facts-header">
-                        <h3>Fun Fact Kimia</h3>
-                        <button id="newFunFact" class="btn-chip">Fakta Baru</button>
-                    </div>
-                    <p id="funFactText">Tahukah kamu? Listrik bisa membuat logam berubah warna menjadi mengkilap banget!</p>
-                </div>
-
-                <h3>Contoh Aplikasi:</h3>
-                <div class="applications">
-                    <div class="app-card">
-                        <span class="app-icon">✨</span>
-                        <h4>Penyepuhan Logam</h4>
-                        <p>Melapisi logam dengan logam lain (emas, perak, nikel)</p>
-                        <small>Contoh: perhiasan, medali, hiasan mini.</small>
-                    </div>
-                    <div class="app-card">
-                        <span class="app-icon">🔧</span>
-                        <h4>Pemurnian Logam</h4>
-                        <p>Memurnikan tembaga dan aluminium</p>
-                        <small>Dipakai agar kabel listrik tidak cepat panas.</small>
-                    </div>
-                    <div class="app-card">
-                        <span class="app-icon">🧪</span>
-                        <h4>Produksi Kimia</h4>
-                        <p>Produksi klorin, natrium hidroksida, dan hidrogen</p>
-                        <small>Klorin bantu menjaga air kolam tetap bersih.</small>
-                    </div>
+                    <button class="btn-next tab-trigger" data-target="video" aria-label="Lanjut ke tab Video">Lanjut →</button>
                 </div>
             </div>
         </div>
@@ -189,9 +574,6 @@
         <!-- Tab Video Pembelajaran -->
         <div class="tab-content" id="video">
             <div class="video-tab">
-                <div class="tab-back">
-                    <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
-                </div>
                 <h2>Video Pembelajaran Sel Elektrolisis</h2>
                 <p class="video-intro">Ikuti penjelasan animasi agar kamu makin paham tentang bagaimana ion bergerak dan reaksi terjadi di dalam sel elektrolisis.</p>
                 <div class="video-section">
@@ -222,14 +604,16 @@
                         <p>Coba jelaskan kembali dengan bahasamu sendiri sebelum berpindah ke tab simulasi untuk praktik.</p>
                     </div>
                 </div>
+                <div class="tab-back">
+                    <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+                    <button class="btn-prev tab-trigger" data-target="teori" aria-label="Kembali ke tab Teori">← Kembali ke Teori</button>
+                    <button class="btn-next tab-trigger" data-target="simulasi" aria-label="Lanjut ke tab Simulasi">Lanjut →</button>
+                </div>
             </div>
         </div>
 
         <!-- Tab Simulasi -->
         <div class="tab-content" id="simulasi">
-            <div class="tab-back">
-                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
-            </div>
             <h2>Simulasi Sel Elektrolisis</h2>
             <div class="mission-banner">
                 <div class="mission-text">
@@ -316,13 +700,15 @@
                     <p>Jika arus semakin besar, ion bergerak lebih cepat. Coba bandingkan hasil dengan waktu yang berbeda.</p>
                 </div>
             </div>
+            <div class="tab-back">
+                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+                <button class="btn-prev tab-trigger" data-target="video" aria-label="Kembali ke tab Video">← Kembali ke Video</button>
+                <button class="btn-next tab-trigger" data-target="kuis" aria-label="Lanjut ke tab Kuis">Lanjut →</button>
+            </div>
         </div>
 
         <!-- Tab Kuis -->
         <div class="tab-content" id="kuis">
-            <div class="tab-back">
-                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
-            </div>
             <h2>Kuis Interaktif</h2>
             <div class="quiz-container" id="quizContainer">
                 <div class="quiz-progress">
@@ -345,6 +731,97 @@
                     <h3>Skor: <span id="score">0</span> / <span id="totalQuestions">5</span></h3>
                 </div>
                 <div id="quizCelebration" class="quiz-celebration" aria-hidden="true"></div>
+            </div>
+            <div class="tab-back">
+                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+                <button class="btn-prev tab-trigger" data-target="simulasi" aria-label="Kembali ke tab Simulasi">← Kembali ke Simulasi</button>
+                <button class="btn-next tab-trigger" data-target="game" aria-label="Lanjut ke tab Game">Ke Game →</button>
+            </div>
+        </div>
+
+        <!-- Tab Game Edukatif -->
+        <div class="tab-content" id="game">
+            <h2>Game Ular Tangga Elektrolisis</h2>
+            <p class="game-intro">Lempar dadu, jelajahi papan ular tangga, dan jawab pertanyaan kimia di petak khusus. Capai petak 36 untuk menang!</p>
+            <div class="game-layout">
+                <section class="game-board-section" aria-label="Papan permainan">
+                    <div class="board-grid" id="gameBoard"></div>
+                </section>
+                <section class="game-controls" aria-label="Kontrol permainan">
+                    <div class="dice-box">
+                        <span class="dice-label">Hasil Dadu</span>
+                        <div class="dice-value" id="diceValue">-</div>
+                        <button id="rollDice" class="btn-primary">Lempar Dadu</button>
+                        <button id="resetGame" class="btn-secondary">Reset Game</button>
+                    </div>
+                    <div class="game-status">
+                        <h3>Status Pemain</h3>
+                        <ul class="player-status-list">
+                            <li class="player-panel player-0 active" data-player="0">
+                                <div class="player-header">
+                                    <span class="player-badge player-0">P1</span>
+                                    <span class="player-name">Pemain 1</span>
+                                </div>
+                                <div class="player-metrics">
+                                    <span>Posisi: <span class="player-position">1</span></span>
+                                    <span>Skor: <span class="player-score">0</span></span>
+                                </div>
+                            </li>
+                            <li class="player-panel player-1" data-player="1">
+                                <div class="player-header">
+                                    <span class="player-badge player-1">P2</span>
+                                    <span class="player-name">Pemain 2</span>
+                                </div>
+                                <div class="player-metrics">
+                                    <span>Posisi: <span class="player-position">1</span></span>
+                                    <span>Skor: <span class="player-score">0</span></span>
+                                </div>
+                            </li>
+                            <li class="player-panel player-2" data-player="2">
+                                <div class="player-header">
+                                    <span class="player-badge player-2">P3</span>
+                                    <span class="player-name">Pemain 3</span>
+                                </div>
+                                <div class="player-metrics">
+                                    <span>Posisi: <span class="player-position">1</span></span>
+                                    <span>Skor: <span class="player-score">0</span></span>
+                                </div>
+                            </li>
+                            <li class="player-panel player-3" data-player="3">
+                                <div class="player-header">
+                                    <span class="player-badge player-3">P4</span>
+                                    <span class="player-name">Pemain 4</span>
+                                </div>
+                                <div class="player-metrics">
+                                    <span>Posisi: <span class="player-position">1</span></span>
+                                    <span>Skor: <span class="player-score">0</span></span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div id="gameMessage" class="game-message" role="status" aria-live="polite" aria-atomic="true">Giliran Pemain 1, lempar dadu!</div>
+                    </div>
+                    <div class="game-legend">
+                        <h3>Legenda</h3>
+                        <ul>
+                            <li><span class="legend badge ladder"></span> Tangga: naik ke petak lebih tinggi.</li>
+                            <li><span class="legend badge snake"></span> Ular: turun ke petak lebih rendah.</li>
+                            <li><span class="legend badge question"></span> Petak soal: jawab pertanyaan elektrolisis.</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <div class="game-question hidden" id="gameQuestion" role="dialog" aria-modal="true">
+                <div class="question-card">
+                    <h3 id="gameQuestionText"></h3>
+                    <div id="gameOptions" class="game-options"></div>
+                    <button id="closeQuestion" class="btn-secondary hidden">Lanjutkan Permainan</button>
+                </div>
+            </div>
+            <div class="tab-back">
+                <button class="btn-back tab-trigger" data-target="pilih" aria-label="Kembali ke pilihan tab">← Kembali ke Pilihan</button>
+                <button class="btn-prev tab-trigger" data-target="kuis" aria-label="Kembali ke tab Kuis">← Kembali ke Kuis</button>
+                <button class="btn-next tab-trigger" data-target="pilih" aria-label="Kembali ke awal">Selesai</button>
             </div>
         </div>
     </div>

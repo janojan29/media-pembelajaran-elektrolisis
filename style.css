@@ -1153,6 +1153,19 @@ header h1 {
     background: rgba(244, 67, 54, 0.15);
 }
 
+.game-essay-input.shake {
+    animation: shakeInput 0.5s ease-in-out;
+    border-color: #f44336;
+}
+
+@keyframes shakeInput {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
 .game-submit-btn {
     text-align: center;
     background: linear-gradient(135deg, var(--primary) 0%, var(--soft-purple) 100%);
@@ -2159,6 +2172,18 @@ input[type="range"]::-webkit-slider-thumb {
 /* Essay Input Styling */
 .essay-input-container {
     margin: 16px 0;
+}
+
+/* Hide number input spinner arrows */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.no-spinner {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .essay-input {

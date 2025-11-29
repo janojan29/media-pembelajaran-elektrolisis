@@ -804,11 +804,11 @@ function loadQuestion() {
         inputDiv.className = 'essay-input-container';
         
         const input = document.createElement('input');
-        input.type = 'text';
+        input.type = 'number';
         input.id = 'essayAnswer';
-        input.className = 'essay-input';
+        input.className = 'essay-input no-spinner';
         input.placeholder = 'Masukkan jawaban (angka saja)';
-        input.inputMode = 'decimal';
+        input.step = 'any';
         
         if (answers[currentQuestion] !== null) {
             input.value = answers[currentQuestion];
@@ -1762,10 +1762,10 @@ function handleQuestion(squareNumber, playerIndex) {
         inputContainer.className = 'game-essay-container';
         
         const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'game-essay-input';
+        input.type = 'number';
+        input.className = 'game-essay-input no-spinner';
         input.placeholder = 'Masukkan jawaban (angka saja)';
-        input.inputMode = 'decimal';
+        input.step = 'any';
         
         const submitBtn = document.createElement('button');
         submitBtn.type = 'button';
@@ -1776,6 +1776,16 @@ function handleQuestion(squareNumber, playerIndex) {
             if (submitBtn.disabled) return;
             
             const userAnswer = input.value.trim().replace(',', '.');
+            
+            // Validasi: jawaban wajib diisi
+            if (userAnswer === '') {
+                input.classList.add('shake');
+                input.placeholder = 'Jawaban wajib diisi!';
+                input.focus();
+                setTimeout(() => input.classList.remove('shake'), 500);
+                return;
+            }
+            
             submitBtn.disabled = true;
             input.disabled = true;
             

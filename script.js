@@ -1103,20 +1103,20 @@ const gameOptionsEl = document.getElementById('gameOptions');
 const closeQuestionBtn = document.getElementById('closeQuestion');
 const playerPanels = document.querySelectorAll('.player-panel');
 
-const BOARD_SIZE = 30;
+const BOARD_SIZE = 36;
 const ROW_SIZE = 6;
 const ladders = {
-    3: 11,
-    7: 16,
-    12: 22,
-    18: 27
+    3: 14,
+    8: 19,
+    15: 26,
+    21: 32
 };
 
 const snakes = {
-    14: 5,
-    21: 9,
-    25: 17,
-    29: 20
+    17: 6,
+    24: 11,
+    30: 20,
+    35: 27
 };
 
 const gameQuestions = [
@@ -1223,7 +1223,7 @@ const questionMap = new Map();
 function assignQuestionSquares() {
     questionMap.clear();
 
-    const blockedSquares = new Set([1, BOARD_SIZE]);
+    const blockedSquares = new Set();
     Object.keys(ladders).forEach(key => {
         const start = Number(key);
         const end = Number(ladders[start]);
@@ -1238,7 +1238,7 @@ function assignQuestionSquares() {
     });
 
     const availableSquares = [];
-    for (let square = 2; square < BOARD_SIZE; square++) {
+    for (let square = 1; square <= BOARD_SIZE; square++) {
         if (!blockedSquares.has(square)) {
             availableSquares.push(square);
         }
@@ -1264,10 +1264,10 @@ const tokenOffsets = [
 ];
 
 const players = [
-    { id: 0, name: 'Pemain 1', tokenLabel: 'P1', className: 'player-0', position: 1, score: 0 },
-    { id: 1, name: 'Pemain 2', tokenLabel: 'P2', className: 'player-1', position: 1, score: 0 },
-    { id: 2, name: 'Pemain 3', tokenLabel: 'P3', className: 'player-2', position: 1, score: 0 },
-    { id: 3, name: 'Pemain 4', tokenLabel: 'P4', className: 'player-3', position: 1, score: 0 }
+    { id: 0, name: 'Pemain 1', tokenLabel: 'P1', className: 'player-0', position: 0, score: 0 },
+    { id: 1, name: 'Pemain 2', tokenLabel: 'P2', className: 'player-1', position: 0, score: 0 },
+    { id: 2, name: 'Pemain 3', tokenLabel: 'P3', className: 'player-2', position: 0, score: 0 },
+    { id: 3, name: 'Pemain 4', tokenLabel: 'P4', className: 'player-3', position: 0, score: 0 }
 ];
 
 const playerPositionEls = Array.from(playerPanels, panel => panel?.querySelector('.player-position'));
@@ -1302,7 +1302,14 @@ function updateStatus(message) {
         const positionLabel = playerPositionEls[index];
         const scoreLabel = playerScoreEls[index];
         if (positionLabel) {
-            positionLabel.textContent = player.position;
+            // Tampilkan posisi dengan benar
+            if (player.position === 0) {
+                positionLabel.textContent = 'Start';
+            } else if (player.position > BOARD_SIZE) {
+                positionLabel.textContent = 'Finish';
+            } else {
+                positionLabel.textContent = player.position;
+            }
         }
         if (scoreLabel) {
             scoreLabel.textContent = player.score;
@@ -1320,7 +1327,19 @@ function placePlayerToken(playerIndex) {
     if (!boardElement) return;
     const token = playerTokenEls[playerIndex];
     if (!token) return;
-    const targetSquare = boardElement.querySelector(`[data-square="${players[playerIndex].position}"]`);
+    const position = players[playerIndex].position;
+    let targetSquare;
+    
+    if (position === 0) {
+        // Posisi Start
+        targetSquare = boardElement.querySelector('[data-square="start"]');
+    } else if (position > BOARD_SIZE) {
+        // Posisi Finish
+        targetSquare = boardElement.querySelector('[data-square="finish"]');
+    } else {
+        targetSquare = boardElement.querySelector(`[data-square="${position}"]`);
+    }
+    
     if (targetSquare) {
         token.classList.remove('jump');
         targetSquare.appendChild(token);
@@ -1333,6 +1352,10 @@ function createBoard() {
     if (!boardElement) return;
     boardElement.innerHTML = '';
 
+    // Grid 7 kolom x 6 baris
+    // Kolom pertama: Start di bawah, Finish di atas, sisanya placeholder
+    // Kolom 2-7: angka 1-36 (zigzag)
+    
     const totalRows = Math.ceil(BOARD_SIZE / ROW_SIZE);
     const rows = [];
 
@@ -1349,7 +1372,51 @@ function createBoard() {
         rows.push(rowNumbers);
     }
 
+    // Render dari baris atas ke bawah
     for (let rowIndex = rows.length - 1; rowIndex >= 0; rowIndex--) {
+        // Kolom pertama: Finish di baris paling atas (rowIndex == rows.length - 1)
+        if (rowIndex === rows.length - 1) {
+            // Petak FINISH di samping kiri petak 36
+            const finishSquare = document.createElement('div');
+            finishSquare.className = 'board-square special-square finish-special';
+            finishSquare.dataset.square = 'finish';
+            const finishInner = document.createElement('div');
+            finishInner.className = 'square-inner';
+            const finishIcon = document.createElement('span');
+            finishIcon.className = 'square-number';
+            finishIcon.textContent = '🏁';
+            finishInner.appendChild(finishIcon);
+            const finishTag = document.createElement('span');
+            finishTag.className = 'square-marker finish-marker';
+            finishTag.textContent = 'FINISH';
+            finishInner.appendChild(finishTag);
+            finishSquare.appendChild(finishInner);
+            boardElement.appendChild(finishSquare);
+        } else if (rowIndex === 0) {
+            // Petak START di samping kiri petak 1
+            const startSquare = document.createElement('div');
+            startSquare.className = 'board-square special-square start-special';
+            startSquare.dataset.square = 'start';
+            const startInner = document.createElement('div');
+            startInner.className = 'square-inner';
+            const startIcon = document.createElement('span');
+            startIcon.className = 'square-number';
+            startIcon.textContent = '🚀';
+            startInner.appendChild(startIcon);
+            const startTag = document.createElement('span');
+            startTag.className = 'square-marker start-marker';
+            startTag.textContent = 'START';
+            startInner.appendChild(startTag);
+            startSquare.appendChild(startInner);
+            boardElement.appendChild(startSquare);
+        } else {
+            // Placeholder untuk baris lainnya
+            const filler = document.createElement('div');
+            filler.className = 'board-square placeholder';
+            boardElement.appendChild(filler);
+        }
+
+        // Kolom 2-7: angka
         rows[rowIndex].forEach(squareNumber => {
             if (squareNumber === null) {
                 const filler = document.createElement('div');
@@ -1371,22 +1438,9 @@ function createBoard() {
             if (questionMap.has(squareNumber)) {
                 square.classList.add('question-square');
             }
-            if (squareNumber === 1) {
-                square.classList.add('square-start');
-            }
-            if (squareNumber === BOARD_SIZE) {
-                square.classList.add('square-finish');
-            }
 
             const inner = document.createElement('div');
             inner.className = 'square-inner';
-
-            if (squareNumber === 1) {
-                const startTag = document.createElement('span');
-                startTag.className = 'square-marker start-marker';
-                startTag.textContent = 'Start';
-                inner.appendChild(startTag);
-            }
 
             const numberTag = document.createElement('span');
             numberTag.className = 'square-number';
@@ -1396,29 +1450,22 @@ function createBoard() {
             if (ladders[squareNumber]) {
                 const tag = document.createElement('span');
                 tag.className = 'square-tag ladder-tag';
-                tag.textContent = `Naik ke ${ladders[squareNumber]}`;
+                tag.textContent = `↑${ladders[squareNumber]}`;
                 inner.appendChild(tag);
             }
 
             if (snakes[squareNumber]) {
                 const tag = document.createElement('span');
                 tag.className = 'square-tag snake-tag';
-                tag.textContent = `Turun ke ${snakes[squareNumber]}`;
+                tag.textContent = `↓${snakes[squareNumber]}`;
                 inner.appendChild(tag);
             }
 
             if (questionMap.has(squareNumber)) {
                 const tag = document.createElement('span');
                 tag.className = 'square-tag question-tag';
-                tag.textContent = 'Soal!';
+                tag.textContent = '?';
                 inner.appendChild(tag);
-            }
-
-            if (squareNumber === BOARD_SIZE) {
-                const finishTag = document.createElement('span');
-                finishTag.className = 'square-marker finish-marker';
-                finishTag.textContent = 'Finish';
-                inner.appendChild(finishTag);
             }
 
             square.appendChild(inner);
@@ -1435,7 +1482,7 @@ function createBoard() {
     });
 
     players.forEach((player, index) => {
-        player.position = 1;
+        player.position = 0; // 0 = Start position
         placePlayerToken(index);
     });
 }
@@ -1449,7 +1496,15 @@ function movePlayerTo(playerIndex, destination, onComplete) {
     const direction = destination > player.position ? 1 : -1;
     player.position += direction;
     placePlayerToken(playerIndex);
-    updateStatus(`${player.name} berada di petak ${player.position}.`);
+    
+    // Tampilkan status dengan benar
+    let positionText = player.position;
+    if (player.position === 0) {
+        positionText = 'Start';
+    } else if (player.position > BOARD_SIZE) {
+        positionText = 'Finish';
+    }
+    updateStatus(`${player.name} berada di petak ${positionText}.`);
     setTimeout(() => movePlayerTo(playerIndex, destination, onComplete), 320);
 }
 
@@ -1704,7 +1759,10 @@ function processLanding(playerIndex, onComplete) {
         return;
     }
     
-    if (player.position === BOARD_SIZE) {
+    // Jika pemain melewati atau sampai di BOARD_SIZE, pindah ke FINISH
+    if (player.position >= BOARD_SIZE) {
+        player.position = BOARD_SIZE + 1; // Posisi Finish
+        placePlayerToken(playerIndex);
         handleVictory(playerIndex);
         // Lanjutkan game jika belum 3 pemenang
         if (!gameEnded) {
@@ -1880,10 +1938,16 @@ function advanceTurn() {
 function performMove(roll) {
     const player = players[currentPlayerIndex];
     const target = player.position + roll;
-    if (target > BOARD_SIZE) {
-        updateStatus(`${player.name} butuh ${BOARD_SIZE - player.position} langkah lagi untuk finis.`);
-        isRolling = false;
-        setTimeout(() => advanceTurn(), 700);
+    
+    // Jika dari Start (0), langsung masuk ke petak 1-6 sesuai dadu
+    if (player.position === 0) {
+        updateStatus(`${player.name} mulai dari Start dan maju ${roll} langkah!`);
+        movePlayerTo(currentPlayerIndex, target, () => {
+            processLanding(currentPlayerIndex, () => {
+                isRolling = false;
+                advanceTurn();
+            });
+        });
         return;
     }
 
@@ -1922,7 +1986,7 @@ function closeLeaderboardAndReset() {
 
 function resetGame() {
     players.forEach(player => {
-        player.position = 1;
+        player.position = 0; // 0 = Start position
         player.score = 0;
     });
     answeredQuestions.clear();

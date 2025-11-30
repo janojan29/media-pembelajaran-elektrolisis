@@ -572,11 +572,20 @@
                     <div class="board-grid" id="gameBoard"></div>
                 </section>
                 <section class="game-controls" aria-label="Kontrol permainan">
-                    <div class="dice-box">
-                        <span class="dice-label">Hasil Dadu</span>
-                        <div class="dice-value" id="diceValue">-</div>
-                        <button id="rollDice" class="btn-primary">Lempar Dadu</button>
-                        <button id="resetGame" class="btn-secondary">Reset Game</button>
+                    <div class="dice-legend-row">
+                        <div class="dice-box">
+                            <span class="dice-label">Hasil Dadu</span>
+                            <div class="dice-value" id="diceValue">-</div>
+                            <button id="rollDice" class="btn-primary">Lempar Dadu</button>
+                        </div>
+                        <div class="game-legend">
+                            <h3>Petunjuk</h3>
+                            <ul class="legend-list">
+                                <li><span class="legend badge ladder"></span> Tangga: naik ke petak lebih tinggi.</li>
+                                <li><span class="legend badge snake"></span> Ular: turun ke petak lebih rendah.</li>
+                                <li><span class="legend badge question"></span> Petak soal: jawab pertanyaan elektrolisis.</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="game-status">
                         <h3>Status Pemain</h3>
@@ -624,14 +633,7 @@
                         </ul>
                         <div id="gameMessage" class="game-message" role="status" aria-live="polite" aria-atomic="true">Giliran Pemain 1, lempar dadu!</div>
                     </div>
-                    <div class="game-legend">
-                        <h3>Petunjuk</h3>
-                        <ul class="legend-list">
-                            <li><span class="legend badge ladder"></span> Tangga: naik ke petak lebih tinggi.</li>
-                            <li><span class="legend badge snake"></span> Ular: turun ke petak lebih rendah.</li>
-                            <li><span class="legend badge question"></span> Petak soal: jawab pertanyaan elektrolisis.</li>
-                        </ul>
-                    </div>
+                    <button id="resetGame" class="btn-secondary btn-reset-game">Reset Game</button>
                 </section>
             </div>
 

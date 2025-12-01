@@ -1759,9 +1759,8 @@ function processLanding(playerIndex, onComplete) {
         return;
     }
     
-    // Jika pemain melewati atau sampai di BOARD_SIZE, pindah ke FINISH
-    if (player.position >= BOARD_SIZE) {
-        player.position = BOARD_SIZE + 1; // Posisi Finish
+    // Jika pemain tepat di posisi Finish (BOARD_SIZE + 1 = 37)
+    if (player.position === BOARD_SIZE + 1) {
         placePlayerToken(playerIndex);
         handleVictory(playerIndex);
         // Lanjutkan game jika belum 3 pemenang
@@ -1938,6 +1937,7 @@ function advanceTurn() {
 function performMove(roll) {
     const player = players[currentPlayerIndex];
     const target = player.position + roll;
+    const FINISH_POSITION = BOARD_SIZE + 1; // Finish = petak 37
     
     // Jika dari Start (0), langsung masuk ke petak 1-6 sesuai dadu
     if (player.position === 0) {
@@ -1948,6 +1948,20 @@ function performMove(roll) {
                 advanceTurn();
             });
         });
+        return;
+    }
+    
+    // Cek apakah angka dadu tepat untuk mencapai Finish
+    // Dari petak 36, butuh 1 untuk ke Finish (37)
+    // Dari petak 35, butuh 2 untuk ke Finish (37)
+    // dst...
+    const stepsToFinish = FINISH_POSITION - player.position;
+    
+    if (target > FINISH_POSITION) {
+        // Angka dadu terlalu besar, tidak bisa bergerak
+        updateStatus(`${player.name} butuh tepat ${stepsToFinish} langkah untuk mencapai Finish. Giliran dilewati.`);
+        isRolling = false;
+        setTimeout(() => advanceTurn(), 1500);
         return;
     }
 
